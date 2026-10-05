@@ -317,13 +317,16 @@ export async function runSelfTest(api) {
       return foe.canSee(S.player, S);
     };
     const inWedge = at(walk, 0);      // on the same ground, in front of the trap
-    const above = at(walk, -46);      // 46px up a bank: the old eye rule saw this
+    // 32px up a bank is inside the old eye rule (|dy| <= 46) but well outside
+    // the drawn band, which is only ~10px deep at this distance: this is the
+    // case that used to catch a pilot the player could see was safe
+    const above = at(walk, -32);
     const behind = at(-walk, 0);      // behind the trap
     const far = at(400, 0);           // well outside the reach
     g.godMode = false;
     return {
       ok: inWedge && !above && !behind && !far,
-      note: `in the wedge=${inWedge}; 46px up a bank=${above} (must be false); behind=${behind}; 400px away=${far}`,
+      note: `in the wedge=${inWedge}; 32px up a bank=${above} (must be false); behind=${behind}; 400px away=${far}`,
     };
   });
 
