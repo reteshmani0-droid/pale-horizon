@@ -18,6 +18,9 @@ off them.
 - **Materials, not just fuel.** Each world hands you one raw material — nutrient pods, rare earth, cryo
   crystal — and a **field processor** you have to run a small puzzle on (purify / smelt / melt) before the
   ship can use it. Refined material is installed at the fabricator, the cryo tank and the galley.
+- **Six recoverable transmissions and a field journal.** Antenna markers hold the lost crew's logs — read
+  one and it is filed in the journal along with materials and per-world field notes. Open it with `J` or
+  from the menu and the pause panel.
 - **Three difficulty tiers** (Explorer / Standard / Nightmare) that change enemy speed and vision range,
   alert duration, water damage, wind strength and asteroid shields.
 - **3+ minutes of play**, three full missions, and chapter select so judges can reach level 3 immediately.
@@ -69,12 +72,13 @@ URLs. To deploy the local folder without Git, run `npx vercel --prod` from the p
 | `Q` / `SHIFT` | dash — a burst of speed with a brief afterimage; one extra dash in mid-air |
 | `←`+`SPACE` against a wall | wall-slide, then wall-jump to climb |
 | `E` / `ENTER` | use beacons, relays, consoles, Moria |
-| `TAB` / `ESC` | pause (objective, collected counts, options, restart) |
+| `TAB` / `ESC` | pause (objective, counted materials, journal, options, restart) |
+| `J` | field journal — materials, recovered transmissions, field notes |
 | `M` | mute |
 | `F3` | debug overlay (fps, scene, masks, enemy alert state) |
 | Bottom-right code reader | enter `admin` to open the developer deck; no F-key shortcut |
 
-Touch buttons appear automatically on tablets and phones (left/right, sneak, DASH, JUMP, USE).
+Touch buttons appear automatically on tablets and phones (left/right, sneak, DASH, CRYO, JUMP, USE), with LOG and PAUSE tools in the top corner.
 
 ## Difficulty
 
@@ -102,8 +106,8 @@ Pick a tier in **Difficulty & options**; it applies the next time a world loads.
 
 ## Ship, puzzles and hidden codes
 
-The lander has a cryo bay (pod and chamber side by side), workshop, spine and bridge,
-with a research deck reached by four starter-kit jumps. Signs mark each compartment.
+The lander is **Horizon-04 · Expedition Carrier** — 96 tiles of hull, over 1,500 pixels wide: cryo bay, workshop, spine and
+bridge, a research deck over the bridge, then crew quarters, the reactor gallery and the raised observation deck. Signs number every compartment 01–07, and the starter kit reaches the research deck on its own.
 The lander stays crashed on Exxos; its intact and wrecked sprites share one hull design.
 The smaller escape pod has the same design when parked and during every travel leg.
 
@@ -134,11 +138,11 @@ Mono instruments/canvas text. Their SIL Open Font License files live beside the 
 The repo ships the checks used while building the game:
 
 ```bash
-node tools/test_engine.mjs       # 58 unit checks: physics, tilemap, progression, difficulty
+node tools/test_engine.mjs       # 64 unit checks: physics, tilemap, progression, difficulty
 node tools/validate_levels.mjs   # approximate reachability and progression-order gate checks
 ```
 
-Open `game/index.html?selftest=1` to run the in-browser self-test — 55 checks that drive the real game
+Open `game/index.html?selftest=1` to run the in-browser self-test — 60 checks that drive the real game
 (movement, catches, processors, installs, saves, intro, six travel legs, extraction,
 actual double-crate/frost/timed puzzle solves, and the starter-kit climb to research) and
 print a report on screen. The tests restore the player's original save slots afterward.
@@ -150,9 +154,9 @@ print a report on screen. The tests restore the player's original save slots aft
 game/                 the game itself (serve this folder)
   index.html          shell, overlays, touch controls
   style.css           pixel-styled UI
-  src/                engine, entities, levels, scenes, audio, ui
+  src/                engine, entities, levels, scenes, journal, audio, ui
     core/             pure game maths: config, tilemap (no DOM)
-  assets/             54 PNG sprites and tiles
+  assets/             138 PNG sprites, tiles and parallax background layers
   dev/selftest.js     dev-only in-browser self-test (?selftest=1)
 art/                  the Python generators that draw every asset
   generate_assets.py  sprites, tiles, characters, UI icons

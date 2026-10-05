@@ -97,4 +97,4 @@ After the first playable build, a second pass focused on feel, accessibility and
 | Audio | silent | **WebAudio engine**: per-world music themes with intensity layers, ambience beds, ~35 effects, master/music/effects/ambience mixer, autoplay-unlock handling |
 | Puzzles | block/plate and relay/bridge | double-crate, timed and frozen-weight seals added; approximate path validation plus input-driven solves in `?selftest=1` |
 | Bugs fixed | — | pause panel could never close; block-push teleported the player through the crate; dash was visual only; moving platforms could not carry the player; m1 spawn sat in a predator's path; audio never started before a user gesture |
-| Tests | none | `tools/test_engine.mjs` (58 unit checks) + `node tools/validate_levels.mjs` + 55 in-browser self-test checks |
+| Tests | none | `tools/test_engine.mjs` (64 unit checks) + `node tools/validate_levels.mjs` + 60 in-browser self-test checks |
