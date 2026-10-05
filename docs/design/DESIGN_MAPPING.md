@@ -18,10 +18,10 @@ Sources (text extracted to `docs/design/ideas.txt` and `docs/design/hs_assignmen
 | "the player will encounter asteroids which they need to dodge" | **Route crossings** — mandatory playable asteroid passages on outbound and return trips to Regrets and the glacier, with shield checkpoints; no bonus fuel |
 | "Your AI assistant turns out to be evil … resources … made the planet's people helpless" | The ending: Cyu confesses it knew, and the player chooses to give the fuel back or keep it |
 | "Designer make a main menu screen, and coder code the main menu screen" | Main menu with title art, an in-fiction tagline, a live lander read-out column, Start/Continue, Save slots, How to play, Field journal, Training deck and Options |
-| Stealth World: "Sneak around monsters as you reach an area", "Planet full of predators with heightened senses" | Mission 1 **Exxos** (see the name note below): 6 predators with vision cones + hearing, 1 patrol drone, tall-grass hiding, sneak mechanic, beacons |
+| Stealth World: "Sneak around monsters as you reach an area", "Planet full of predators with heightened senses" | Mission 1 **Exxos** (see the name note below): 6 creeper plants with ground cones + hearing, 1 patrolling bird, tall-grass hiding, sneak mechanic, beacons |
 | World 2 "The world of regrets" — "Moria separates his soul from his body, forcing the player to solve puzzles to retrieve his soul and gain fuel. **(NOT A FIGHT)**" | Mission 2: three rune-block/pressure-plate puzzles open three seals, the soul orb must be **carried** (not fought) to Moria's body, and only then does the fuel become collectable |
 | "Mechanics like a m…" (sentence cut off in the document) | Filled in as push-blocks, pressure plates, a sealed door per puzzle, checkpoint beacons and moving through ruins |
-| "world 3" (otherwise blank) | **Filled in: The Hollow Signal** — a storm world whose power died with its people. Ember charges + relays raise bridges, wind gusts shove the player, searchlight drones patrol. See section C |
+| "world 3" (otherwise blank) | **Filled in: The Hollow Signal** — a storm world whose power died with its people. Ember charges + relays raise bridges, wind gusts shove the player, birds patrol the air. See section C |
 | "spaceship — This is the main base you wake up in here after your ship crashes" | The Cryo Bay hub: crashed ship sprite, cryo pod, nav console and repair bay stations |
 | Roles listed (Avaneesh, Retesh, Angad, Niko, Nihaan, Arjun) | Kept intact in the portfolio title page and the repository README; the game itself carries no credits screen |
 | "You may also add revisions of ideas or endings" | Two endings written (**Homecoming Deferred** / **The Long Way Home**) |
@@ -65,9 +65,10 @@ no violence. That is not just flavour text; it is a hard design constraint, and 
 
 - There is **no attack action anywhere**: the input map (`game/src/engine.js`) has left, right, up, down,
   jump, dash, use, pause, mute and debug — nothing that damages.
-- Enemies have **no health**. `Player` has masks; `Predator`, `Drone` and `Moria` have no damage state at
-  all. Contact runs one direction only: `scene.damagePlayer(...)` in `game/src/scenes.js`, which costs the
-  player a mask, knocks them back and grants brief invulnerability.
+- Enemies have **no health**. `Player` has masks; `Creeper`, `Bird`, `Plant` and `Moria` have no damage
+  state at all. Contact runs one direction only: a creeper drags the pilot under the soil and a bird lifts
+  them into the air (`scene.onEnemyContact(...)` in `game/src/scenes.js`), which restarts the descent from
+  the last beacon rather than draining a bar.
 - `Moria` is implemented as an interactable (`use` → fuse the soul), never a target. The relay puzzle on
   the Hollow Signal and the block/plate puzzles on the World of Regrets are the only "bosses".
 - The asteroid route is dodging only — asteroids can hit the shuttle, the shuttle cannot hit back.
@@ -96,5 +97,5 @@ After the first playable build, a second pass focused on feel, accessibility and
 | Difficulty | one balance | **Explorer / Standard / Nightmare** scaling enemy speed, vision, alert time, water damage, wind and asteroid shields |
 | Audio | silent | **WebAudio engine**: per-world music themes with intensity layers, ambience beds, ~35 effects, master/music/effects/ambience mixer, autoplay-unlock handling |
 | Puzzles | block/plate and relay/bridge | double-crate, timed and frozen-weight seals added; approximate path validation plus input-driven solves in `?selftest=1` |
-| Bugs fixed | — | pause panel could never close; block-push teleported the player through the crate; dash was visual only; moving platforms could not carry the player; m1 spawn sat in a predator's path; audio never started before a user gesture |
-| Tests | none | `tools/test_engine.mjs` (64 unit checks) + `node tools/validate_levels.mjs` + 60 in-browser self-test checks |
+| Bugs fixed | — | pause panel could never close; block-push teleported the player through the crate; dash was visual only; moving platforms could not carry the player; m1 spawn sat in a creeper's path; audio never started before a user gesture |
+| Tests | none | `tools/test_engine.mjs` (64 unit checks) + `node tools/validate_levels.mjs` + 61 in-browser self-test checks |

@@ -15,7 +15,7 @@ import { themeOf } from '../src/engine.js';
 import { DIFFICULTY, DIFFICULTY_ORDER } from "../src/core/config.js";
 import { loadSave, persist, LevelScene } from "../src/scenes.js";
 import { getVolumes, setVolume, toggleMute, isMuted, initAudio } from "../src/audio.js";
-import { Relay, Predator, MovingPlatform, Pickup, Plate, Processor } from "../src/entities.js";
+import { Relay, Creeper, MovingPlatform, Pickup, Plate, Processor } from "../src/entities.js";
 import { closeProcessor, openProcessor, processorUpdate, processorOpen } from "../src/minigame.js";
 import { hidePanel } from "../src/ui.js";
 import { closeAdmin, adminOpen } from "../src/admin.js";
@@ -131,7 +131,7 @@ export async function runSelfTest(api) {
   };
 
   /* --------------------------------------------------------- 3. movement */
-  /* The hub is the physics sandbox: flat ground, tall walls, no predators. */
+  /* The hub is the physics sandbox: flat ground, tall walls, no creepers. */
   const sandbox = () => {
     const S = start("hub", 20);
     grantKit(S);
@@ -254,8 +254,8 @@ export async function runSelfTest(api) {
   /* --------------------------------------------------- 4. caught, no combat */
   check("catch: contact restarts the descent, it does not drain a health bar", () => {
     const S = start("m1");
-    const foe = S.enemies.find((e) => e instanceof Predator);
-    if (!foe) return { ok: false, note: "no predator in m1" };
+    const foe = S.enemies.find((e) => e instanceof Creeper);
+    if (!foe) return { ok: false, note: "no creeper in m1" };
     const before = g.save.catches;
     const masks = S.player.masks;
     put(S, foe.x, foe.y);
@@ -274,10 +274,39 @@ export async function runSelfTest(api) {
     };
   });
 
+  check("catch: the card is a small slip, and the plant pulls under while the bird lifts", () => {
+    const slip = document.querySelector("#caught .slip");
+    if (!slip) return { ok: false, note: "no .slip inside #caught" };
+    const lines = [];
+    const run = (world, kind) => {
+      const S = start(world, 20);
+      const foe = S.enemies.find((e) => e.constructor.name === kind);
+      if (!foe) return null;
+      put(S, foe.x, foe.y);
+      let frames = 0;
+      while (!S.caughtAlready && frames < 240) { step(1); frames += 1; }
+      const box = slip.getBoundingClientRect();
+      const row = { shown: S.caughtAlready === true, line: document.getElementById("caught-line").textContent, under: Boolean(S.grab && S.grab.under), w: Math.round(box.width), h: Math.round(box.height) };
+      clearTimeout(S.restartTimer);
+      g.caughtOverlay(false);
+      lines.push(`${kind}: "${row.line}" ${row.w}x${row.h} under=${row.under}`);
+      return row;
+    };
+    const plant = run("m1", "Creeper");
+    const bird = run("m3", "Bird");
+    const ok = Boolean(plant && bird)
+      && plant.shown && bird.shown
+      && plant.line === "PULLED UNDER THE ROOTS" && plant.under
+      && bird.line === "TAKEN UP INTO THE AIR" && !bird.under
+      && plant.w > 120 && plant.w < 320 && plant.h < 120
+      && bird.w > 120 && bird.w < 320 && bird.h < 120;
+    return { ok, note: lines.join(" | ") || "no creeper in m1 / no bird in m3" };
+  });
+
   check("catch: the test deck's catch-proof mode lets the same contact pass", () => {
     g.godMode = true;
     const S = start("m1", 20);
-    const foe = S.enemies.find((e) => e instanceof Predator);
+    const foe = S.enemies.find((e) => e instanceof Creeper);
     put(S, foe.x, foe.y);
     step(24);
     const safe = !S.caughtAlready;
@@ -506,7 +535,7 @@ export async function runSelfTest(api) {
     const S = start('m1');
     g.godMode = true;
     const plate = S.plates.find((p) => p.wants === 'frozen');
-    const hunter = S.enemies.find((e) => e instanceof Predator && e.home.x === 137 * 16);
+    const hunter = S.enemies.find((e) => e instanceof Creeper && e.home.x === 137 * 16);
     const gate = S.doors.find((d) => d.group === plate.group);
     put(S, plate.x + 38, 298);
     S.player.freezeGun = true; S.player.dir = -1;
@@ -863,7 +892,7 @@ export async function runSelfTest(api) {
     const S = start("m1", 20);
     const plant = S.entities.find((e) => e.constructor.name === "Plant");
     if (!plant) return { ok: false, note: "no vent pitcher in m1" };
-    g.godMode = true;              // or the patrolling predator takes the pilot instead
+    g.godMode = true;              // or the patrolling creeper takes the pilot instead
     S.player.freezeGun = true;
     S.player.dir = 1;              // the projector only fires forwards
     put(S, plant.x - 12, plant.y);
@@ -900,7 +929,7 @@ export async function runSelfTest(api) {
   check("jetpack: holding jump in the air burns thrust, and only with the pack built", () => {
     const S = start("m1", 20);
     const P = S.player;
-    g.godMode = true;              // a fall from here lands on the predator at x=18
+    g.godMode = true;              // a fall from here lands on the creeper at x=18
     /* Drop the pilot from open sky with the pack off and on: the pack cancels
        almost all of gravity, so the same hold has to fall far less with it. */
     const fall = (pack) => {
@@ -980,8 +1009,8 @@ export async function runSelfTest(api) {
     const s = g.save;
     const before = s.coins.amber;
     const S = start("m1", 30);
-    const foe = S.enemies.find((e) => e instanceof Predator);
-    if (!foe) return { ok: false, note: "no predator in m1" };
+    const foe = S.enemies.find((e) => e instanceof Creeper);
+    if (!foe) return { ok: false, note: "no creeper in m1" };
     foe.state = "alert";
     foe.timer = 0.01;
     step(10);
@@ -1033,7 +1062,7 @@ export async function runSelfTest(api) {
       name: "catch: the level rebuilds itself a beat after the card goes up",
       run: async () => {
         const S = start("m1", 20);
-        const foe = S.enemies.find((e) => e instanceof Predator);
+        const foe = S.enemies.find((e) => e instanceof Creeper);
         put(S, foe.x, foe.y);
         for (let i = 0; i < 240 && !S.caughtAlready; i += 1) { g.update(DT); input.endFrame(); }
         const caught = S.caughtAlready === true;

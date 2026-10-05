@@ -119,8 +119,10 @@ export class LevelScene {
     this.seams = this.entities.filter((e) => e instanceof Deposit);
     this.transmissions = this.entities.filter((e) => e instanceof Transmission);
     for (const e of this.transmissions) e.read = (game.save.journal || []).includes(e.id);
-    /** one restart per catch, so a frame with two hunters cannot stack them */
+    /** one restart per catch, so a frame with two creepers cannot stack them */
     this.caughtAlready = false;
+    /** the half second after a catch: the pilot is dragged under or lifted off */
+    this.grab = null;
     /** group -> whether the puzzle has already paid out its currency */
     this.paidGroups = new Set();
     /** enemies whose hunt already paid out, so one chase cannot be farmed */
@@ -171,8 +173,49 @@ export class LevelScene {
 
   leave() {
     clearTimeout(this.restartTimer);
+    this.grab = null;
     flash(false);
     this.game.caughtOverlay(false);
+  }
+
+  /**
+   * The pilot, plus the half second where something has already got them: a
+   * creeper pulls them down into the soil and closes tendrils over the feet, a
+   * bird lifts them off the ground entirely.
+   */
+  drawPlayer(ctx, cam) {
+    const grab = this.grab;
+    if (!grab) { this.player.draw(ctx, cam); return; }
+    const k = Math.min(1, grab.t / 0.35);
+    ctx.save();
+    ctx.translate(0, grab.under ? k * 20 : -k * 18);
+    this.player.draw(ctx, cam);
+    ctx.restore();
+    const cx = this.player.x + this.player.w / 2 - cam.x;
+    const feet = this.player.y + this.player.h - cam.y;
+    if (grab.under) {
+      ctx.strokeStyle = "#5d8a55";
+      ctx.lineWidth = 2;
+      for (let i = -2; i <= 2; i += 1) {
+        ctx.beginPath();
+        ctx.moveTo(cx + i * 7, feet + 4);
+        ctx.lineTo(cx + i * 3, feet - 6 - k * 8);
+        ctx.stroke();
+      }
+      ctx.fillStyle = "rgba(18,26,18,0.5)";
+      ctx.beginPath();
+      ctx.ellipse(cx, feet + 2, 13, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.strokeStyle = "rgba(210,220,230,0.5)";
+      ctx.lineWidth = 1;
+      for (let i = -1; i <= 1; i += 1) {
+        ctx.beginPath();
+        ctx.moveTo(cx + i * 5, feet + 2);
+        ctx.lineTo(cx + i * 11, feet + 16 - k * 6);
+        ctx.stroke();
+      }
+    }
   }
 
   /* ------------------------------------------------------------- helpers -- */
@@ -215,7 +258,10 @@ export class LevelScene {
    */
   onEnemyContact(enemy) {
     if (this.interior || this.game.godMode) return;
-    this.caught(`${enemy.constructor.name.toUpperCase()} CONTACT`);
+    // a creeper drags the pilot under the soil, a bird lifts them off it: the
+    // short animation runs behind the card, so the catch reads as an event
+    this.grab = { t: 0, under: Boolean(enemy.pullsUnder) };
+    this.caught(enemy.catchLine || "CAUGHT");
   }
 
   caught(why = "CAUGHT") {
@@ -228,7 +274,7 @@ export class LevelScene {
     sfx("downed");
     hitStop(0.08);
     this.camera.shake = 1.2;
-    flash(true);
+    flash(true, "hurt");          // a red edge, not a blackout: the grab plays behind it
     this.frozen = true;
     this.game.caughtOverlay(true, why);
     // kept on the scene so the self-test can take ownership of the restart
@@ -236,7 +282,7 @@ export class LevelScene {
       flash(false);
       this.game.caughtOverlay(false);
       this.game.startLevel(this.def.id);
-    }, 800);
+    }, 900);
   }
 
   onPickup(p) {
@@ -321,6 +367,7 @@ export class LevelScene {
       return;
     }
     if (input.pressed('journal') && !panelOpen() && !this.frozen) { this.game.showJournal(); return; }
+    if (this.grab) this.grab.t += dt;
     const step = dt * 60;
     this.elapsed += dt;
     this.game.save.timePlayed = (this.game.save.timePlayed || 0) + dt;
@@ -766,7 +813,7 @@ export class LevelScene {
     }
     for (const e of this.enemies) e.draw(ctx, cam);
     this.ghosts.draw(ctx, cam);
-    this.player.draw(ctx, cam);
+    this.drawPlayer(ctx, cam);
     this.particles.draw(ctx, cam);
 
     if (this.def.wind && this.windPower > 0.05) {

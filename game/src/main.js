@@ -552,13 +552,14 @@ class Game {
         <span>E / ENTER</span><span>use beacons, relays, consoles, Moria</span>
         <span>TAB / ESC</span><span>pause &middot; F3 debug overlay &middot; M mute</span>
       </div>
-      <p><b>Getting caught.</b> There is no health bar and no fight: if a hunter or a drone reaches you,
+      <p><b>Getting caught.</b> There is no health bar and no fight: if a creeper gets your feet or a bird takes you off the ground,
       the descent restarts from the last beacon you lit. Nothing you already banked is lost - a catch
       costs you the attempt, not the run. <b>Beacons are benches</b>: light one to save your progress.</p>
-      <p><b>No weapons.</b> Nothing in this game can be hurt. Predators and drones can only catch you.</p>
-      <p><b>Stealth rules.</b> Predators see in a cone and hear you run. Sneaking halves the distance they
-      notice you. Standing still in tall grass makes you invisible (the HUD says HIDDEN). Drones ignore
-      grass but cannot see through walls or platforms. Exxos hides <b>vent pitchers</b> in that same grass:
+      <p><b>No weapons.</b> Nothing in this game can be hurt. Creepers and birds can only catch you.</p>
+      <p><b>Stealth rules.</b> Creepers feel footsteps through the soil: the green fan on the ground in
+      front of one is its reach, and it is shorter when you sneak. Standing still in tall grass hides you
+      (the HUD says HIDDEN) because roots and matting deaden the ground. Birds hunt by sight from above,
+      ignore grass, and cannot see through walls or platforms. Exxos hides <b>vent pitchers</b> in that same grass:
       step over one and it opens, drags you under and takes the run - freeze it or walk around it.</p>
       <p><b>Field journal.</b> Press J or open it from pause. Antenna-marked recorders preserve transmissions,
       lore and hidden-code clues in your save. Your journal also tracks raw/refined materials.</p>
@@ -568,13 +569,13 @@ class Game {
       <p><b>Extraction.</b> Build the extractor for one plate and one ration. Hold E beside a glowing seam for
       1.5 seconds to extract a batch. Loose materials remain available to build your first rig.</p>
       <p><b>Puzzles.</b> Push distinct crates onto both plates in the dig's double seal; race the three-second
-      gate; return Moria's soul. Freeze a hunter onto Exxos's blue plate for an optional cache.
+      gate; return Moria's soul. Freeze a creeper onto Exxos's blue plate for an optional cache.
       On the glacier carry ember charges to relays to raise bridges.</p>
       <p><b>Travel.</b> Every world has its own outbound and return shots. Regrets and the glacier require an
       asteroid crossing: steer with arrows or WASD. Space skips cinematic shots, never the belt.
       A depleted shield restarts that crossing without costing your materials.</p>
-      <p><b>Difficulty.</b> Explorer is gentle (slower hunters, narrow cones, water is harmless).
-      Standard is the intended game. Nightmare sends fast hunters with wide cones across the ice.</p>`,
+      <p><b>Difficulty.</b> Explorer is gentle (slower creepers, shorter reach, water is harmless).
+      Standard is the intended game. Nightmare sends fast creepers and sharp-eyed birds across the ice.</p>`,
       [{ label: "Close", primary: true, onClick: () => this.toMenu() }, { label: "Chapter select", sub: "any world, any time", onClick: () => this.showChapters() }]);
     hideMenu();
   }

@@ -604,56 +604,80 @@ def lab_bench():
     return i
 
 
-def predator(kind):
-    """24x18 plated, violet stalker with bioluminescent dorsal quills."""
+def creeper(kind):
+    """24x18: the ground creeper. A vine that feels footsteps through the soil and
+    crawls at them; what it reaches, it folds under the roots. Never stands up, so
+    the silhouette reads as a plant and not as an animal."""
     i = Img(24, 18)
-    bounce = [0, 1, 0, 1][int(kind[-1])] if kind.startswith("walk") else 0
-    if kind == "alert":
-        bounce = -1
-    y = 6 + bounce
-    # tail
-    i.line(3, y + 4, 0, y + 1, P["pred_d"])
-    i.line(0, y + 1, 2, y + 1, P["pred"])
-    # body
-    i.ellipse(11, y + 5, 8, 4, P["pred"])
-    i.ellipse(10, y + 4, 6, 3, P["pred_l"])
-    # legs
-    for lx in (6, 9, 14, 17):
-        i.rect(lx, y + 8, 2, 6 - bounce, P["pred_d"])
-        i.rect(lx, y + 13 - bounce, 3, 1, P["ink2"])
-    # Dorsal plates and alternating stepping legs make a readable silhouette.
-    for sx in range(5, 17, 3):
-        i.line(sx, y + 4, sx - 2, max(0, y - 2), P['pred_l'])
-        i.put(sx - 2, max(0, y - 2), P['bio'])
-    for sx in (7, 12, 16):
-        i.rect(sx, y + 4, 2, 2, P['pred_d'])
-        i.rect(sx, y + 3, 2, 1, P['pred_l'])
-    # head
-    i.ellipse(19, y + 3, 4, 3, P["pred"])
-    i.rect(21, y + 3, 3, 2, P["pred_l"])
-    i.rect(22, y + 1, 1, 1, P["pred_d"])
-    i.rect(23, y + 2, 1, 1, P["pred_d"])
-    i.line(17, y + 1, 18, max(0, y - 3), P['pred_l'])
-    i.rect(18, y + 5, 5, 1, P['ink2'])
-    eye = P["eye"] if kind == "alert" else P["gold"]
-    i.rect(20, y + 2, 2, 1, eye)
+    # four crawl frames: the foliage fans and the trap bobs, so movement reads
+    sway = [0, 1, 2, 1][int(kind[-1])] if kind.startswith("walk") else 2
+    snapped = kind == "alert"
+    gy = 15                              # ground line under the plant
+    # the soil it has turned over, with roots running back into it
+    i.ellipse(10, gy + 2, 12, 3, P["dirt_d"])
+    i.ellipse(9, gy + 1, 9, 2, P["dirt"])
+    for dx in (-11, -8, -5, -2, 1):
+        i.line(10 + dx, gy, 10 + dx - 3, 17, P["grass_d"])
+    # a fan of leaf stalks behind the trap: unmistakably foliage
+    for bx, spread in ((4, -2), (7, -1), (10, 1)):
+        top = 3 + abs(spread) + sway // 2
+        i.line(bx, gy - 1, bx + spread, top, P["grass_d"])
+        i.line(bx, gy - 2, bx + spread, top + 1, P["grass"])
+        i.rect(bx + spread - 1, top, 3, 2, P["grass_l"])
+        i.put(bx + spread + 2, top + 1, P["grass"])
+    # the trap: two lips around a dark throat, shut or open
+    gape = 2 if snapped else 0
+    i.ellipse(17, gy - 6 - gape, 5, 2, P["grass"])          # upper lip
+    i.line(13, gy - 6 - gape, 21, gy - 6 - gape, P["sand_l"])
+    i.ellipse(17, gy - 3 + gape, 5, 2, P["grass_d"])        # lower lip
+    i.rect(14, gy - 6, 7, 3 + gape * 2, P["ink"])           # throat
+    if snapped:
+        i.rect(15, gy - 6, 5, 2 + gape * 2, P["bio_d"])
+        i.rect(16, gy - 5, 3, gape * 2, P["bio"])
+        for tx in (15, 18, 21):
+            i.line(tx, gy - 6 - gape, tx, gy - 7 - gape, P["sand_l"])
+            i.put(tx, gy - 8 - gape, P["hull"])
+    else:
+        i.line(14, gy - 5, 20, gy - 5, P["dirt_d"])         # the shut seam
+        i.put(17, gy - 8, P["grass_l"])
+        i.put(20, gy - 8, P["grass_l"])
     i.outline(P["ink"])
     return i
 
 
-def drone(kind):
-    """20x12 hover drone."""
+def bird(kind):
+    """20x12: a ridge bird. Rides the thermals over the canopy, hunts by sight, and
+    folds its wings when it has you, so the airborne threat is an animal and not a
+    machine."""
     i = Img(20, 12)
-    y = 1 if kind == "hover1" else 0
-    i.ellipse(10, y + 5, 8, 4, P["metal"])
-    i.ellipse(10, y + 4, 6, 3, P["metal_l"])
-    i.rect(3, y + 8, 14, 2, P["metal_d"])
-    eye = P["eye"] if kind == "alert" else P["visor"]
-    i.ellipse(10, y + 5, 3, 2, eye)
-    i.rect(1, y + 2, 4, 2, P["metal_d"])
-    i.rect(15, y + 2, 4, 2, P["metal_d"])
-    i.line(1, y + 2, 0, y, P["metal_l"])
-    i.line(18, y + 2, 19, y, P["metal_l"])
+    swoop = kind == "alert"
+    high = kind == "fly0"
+    # body on the right, tail streaming left, head and beak out front
+    i.ellipse(9, 6, 5, 2, P["dirt_d"])
+    i.ellipse(9, 6, 4, 1, P["dirt_l"])
+    i.ellipse(14, 5, 3, 2, P["dirt_l"])
+    i.line(4, 6, 1, 7, P["dirt_d"])
+    i.put(1, 7, P["ink2"])
+    i.line(16, 4, 19, 5, P["gold"])
+    i.line(16, 5, 19, 5, P["gold"])
+    i.put(19, 5, P["gold_d"])
+    i.put(14, 4, P["eye"] if swoop else P["ink2"])
+    # wings as clear diagonals: a V on the upstroke, an inverted V on the return,
+    # swept flat back when it folds and comes at you
+    if swoop:
+        for dx in range(0, 6):
+            i.put(7 - dx, 5 - dx // 2, P["dirt"])
+            i.put(12 + dx, 5 - dx // 2, P["dirt_d"])
+        i.line(1, 4, 6, 5, P["dirt"])
+        i.line(14, 2, 17, 3, P["dirt_d"])
+    elif high:
+        for dx in range(0, 6):
+            i.put(8 - dx, 5 - dx, P["dirt"])
+            i.put(11 + dx, 5 - dx, P["dirt_d"])
+    else:
+        for dx in range(0, 6):
+            i.put(8 - dx, 7 + dx, P["dirt"])
+            i.put(11 + dx, 7 + dx, P["dirt_d"])
     i.outline(P["ink"])
     return i
 
@@ -1268,14 +1292,15 @@ def main():
         img.save(name)
 
     sprites = {
-        "m_walk0": predator("walk0"),
-        "m_walk1": predator("walk1"),
-        "m_walk2": predator("walk2"),
-        "m_walk3": predator("walk3"),
-        "m_alert": predator("alert"),
-        "d_hover0": drone("hover0"),
-        "d_hover1": drone("hover1"),
-        "d_alert": drone("alert"),
+        # the pilot sets own the c_ prefix, so the creeper is cr_
+        "cr_walk0": creeper("walk0"),
+        "cr_walk1": creeper("walk1"),
+        "cr_walk2": creeper("walk2"),
+        "cr_walk3": creeper("walk3"),
+        "cr_snap": creeper("alert"),
+        "b_fly0": bird("fly0"),
+        "b_fly1": bird("fly1"),
+        "b_swoop": bird("alert"),
         "spr_moria": moria_body(),
         "spr_orb": soul_orb(),
         "spr_shard": shard(),

@@ -260,8 +260,8 @@ function validate(def) {
       if (cfg.wants === "frozen") {
         // a cold plate is held by an ice-locked hunter, so what it needs is
         // something that can be frozen while it is standing on the plate
-        const near = (def.entities || []).filter((e) => ["predator", "drone", "plant"].includes(e.t)
-          && Math.abs(e.x - cfg.x) <= 4 && Math.abs((e.y || 0) - cfg.y) <= (e.t === "drone" ? 8 : 2));
+        const near = (def.entities || []).filter((e) => ["creeper", "bird", "plant"].includes(e.t)
+          && Math.abs(e.x - cfg.x) <= 4 && Math.abs((e.y || 0) - cfg.y) <= (e.t === "bird" ? 8 : 2));
         if (!near.length) fail(def.id, `cold plate at ${cfg.x},${cfg.y} has no hunter that ever stands on it`);
         else note(def.id, `cold plate at ${cfg.x},${cfg.y} is held by ${near[0].t} at ${near[0].x}`);
       } else if (cfg.solo) {
@@ -317,14 +317,14 @@ function validate(def) {
   }
 
   // enemies should start on ground, not in walls or water
-  for (const cfg of (def.entities || []).filter((e) => e.t === "predator" || e.t === "drone")) {
-    if (cfg.t === "predator") {
+  for (const cfg of (def.entities || []).filter((e) => e.t === "creeper" || e.t === "bird")) {
+    if (cfg.t === "creeper") {
       const below = map.at(cfg.x, cfg.y + 1);
       const groundBelow = below === SOLID || below === PLATFORM || map.at(cfg.x, cfg.y + 2) === SOLID;
-      if (!groundBelow) fail(def.id, `predator at ${cfg.x},${cfg.y} starts over a hole (falls into water)`);
-      if (map.isWall(cfg.x, cfg.y)) fail(def.id, `predator at ${cfg.x},${cfg.y} starts inside a wall`);
+      if (!groundBelow) fail(def.id, `creeper at ${cfg.x},${cfg.y} starts over a hole (falls into water)`);
+      if (map.isWall(cfg.x, cfg.y)) fail(def.id, `creeper at ${cfg.x},${cfg.y} starts inside a wall`);
     } else if (map.isWall(cfg.x, cfg.y)) {
-      fail(def.id, `drone at ${cfg.x},${cfg.y} starts inside a wall`);
+      fail(def.id, `bird at ${cfg.x},${cfg.y} starts inside a wall`);
     }
   }
 

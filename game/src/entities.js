@@ -2,7 +2,7 @@
  * Gameplay entities. Movement is a small state machine (idle/run/jump/fall/
  * wallslide/dash/sneak) so animation, audio and physics stay in sync.
  */
-import { IMG } from "./assets.js";
+import { IMG, flip } from "./assets.js";
 import {
   input, moveEntity, overlap, sightClear, supported,
   TILE, PLATFORM_H,
@@ -406,7 +406,7 @@ export class Enemy {
   }
 
   /**
-   * The cryo projector's effect. A frozen hunter cannot see, hear, move or
+   * The cryo projector's effect. Frozen, a creeper cannot feel, hear, move or
    * catch anyone until it thaws - which is the only thing the projector does.
    */
   freeze(seconds) {
@@ -487,7 +487,7 @@ export class Enemy {
   }
 }
 
-export class Predator extends Enemy {
+export class Creeper extends Enemy {
   constructor(cfg, diff) {
     super(cfg, diff);
     this.cfgVision = cfg.vision || 132;
@@ -496,6 +496,8 @@ export class Predator extends Enemy {
     this.h = 14;
     this.fly = false;
     this.baseSpeed = 0.7;
+    this.pullsUnder = true;          // a catch drags the pilot under the roots
+    this.catchLine = "PULLED UNDER THE ROOTS";
   }
 
   update(dt, level) {
@@ -544,35 +546,45 @@ export class Predator extends Enemy {
     this.contact(level);
   }
 
+  /**
+   * A creeper has no eyes. What is drawn here is its reach: a wedge of disturbed
+   * soil running along the ground in front of the trap, which is exactly the
+   * area the plant feels footsteps through. Sneaking shortens it; grass over
+   * roots deadens it, which is why standing still in tall grass hides you.
+   */
   drawCone(ctx, cam) {
     const range = this.state === "alert" ? this.vision * 0.8 : this.vision;
-    ctx.fillStyle = this.state === "alert" ? "rgba(246,96,96,0.20)" : "rgba(242,198,94,0.13)";
-    const eye = this.eye();
-    const spread = 0.42;
+    const foot = this.y + this.h;
+    ctx.fillStyle = this.state === "alert" ? "rgba(246,96,96,0.22)" : "rgba(150,220,130,0.13)";
     ctx.beginPath();
-    ctx.moveTo(eye.x - cam.x, eye.y - cam.y);
+    ctx.moveTo(this.x + this.w / 2 - cam.x, foot - cam.y);
+    const spread = 0.30;
     for (let i = 0; i <= 8; i += 1) {
       const a = -spread + (spread * 2 * i) / 8;
       const ang = this.dir > 0 ? a : Math.PI - a;
-      ctx.lineTo(eye.x + Math.cos(ang) * range - cam.x, eye.y + Math.sin(ang) * range - cam.y);
+      ctx.lineTo(
+        this.x + this.w / 2 + Math.cos(ang) * range - cam.x,
+        foot + Math.sin(ang) * 14 - cam.y
+      );
     }
     ctx.closePath();
     ctx.fill();
   }
 
   draw(ctx, cam) {
-    const name = this.state === "alert" ? "m_alert" : `m_walk${Math.floor(this.anim) % 4}`;
-    const spr = IMG[this.dir < 0 ? `${name}_flip` : name] || IMG[name];
-    ctx.drawImage(spr, Math.round(this.x + this.w / 2 - spr.width / 2 - cam.x), Math.round(this.y + this.h - spr.height - cam.y));
+    const name = this.state === "alert" ? "cr_snap" : `cr_walk${Math.floor(this.anim) % 4}`;
+    const spr = (this.dir < 0 ? flip(name) : IMG[name]) || IMG[name];
+    if (!spr) return;
+    ctx.drawImage(spr, Math.round(this.x + this.w / 2 - spr.width / 2 - cam.x), Math.round(this.y + this.h - spr.height + 2 - cam.y));
     if (this.state === "alert") {
       const a = IMG.ui_alert;
-      const y = this.y - 14 - cam.y + Math.sin(performance.now() / 110) * 1.5;
+      const y = this.y - 16 - cam.y + Math.sin(performance.now() / 110) * 1.5;
       ctx.drawImage(a, Math.round(this.x + this.w / 2 - a.width / 2 - cam.x), Math.round(y));
     }
   }
 }
 
-export class Drone extends Enemy {
+export class Bird extends Enemy {
   constructor(cfg, diff) {
     super(cfg, diff);
     this.cfgVision = cfg.vision || 150;
@@ -583,6 +595,10 @@ export class Drone extends Enemy {
     this.baseSpeed = 0.62;
     this.hoverY = cfg.y * TILE;
     this.hearing = 0;
+    this.shadowY = null;             // ground under the bird, found each moment
+    this.shadowTick = 0;
+    this.pullsUnder = false;         // a bird lifts the pilot instead
+    this.catchLine = "TAKEN UP INTO THE AIR";
   }
 
   reset() {
@@ -596,6 +612,17 @@ export class Drone extends Enemy {
     const p = level.player;
     this.anim += step * 0.22;
     if (this.contactCool > 0) this.contactCool -= dt;
+    // find the ground underneath, so the shadow lands on something real
+    this.shadowTick -= dt;
+    if (this.shadowTick <= 0) {
+      this.shadowTick = 0.12;
+      const col = Math.floor((this.x + this.w / 2) / TILE);
+      const from = Math.floor((this.y + this.h) / TILE);
+      this.shadowY = null;
+      for (let i = 0; i < 16 && this.shadowY === null; i += 1) {
+        if (level.map.isWall(col, from + i)) this.shadowY = (from + i) * TILE;
+      }
+    }
     if (this.thawTick(dt)) return;
     const sees = this.canSee(p, level);
 
@@ -630,21 +657,28 @@ export class Drone extends Enemy {
     this.contact(level);
   }
 
+  /** The bird's own shadow, cast on whatever is underneath it. */
+  drawShadow(ctx, cam) {
+    if (this.shadowY === null) return;
+    const diving = this.state === "alert";
+    ctx.globalAlpha = diving ? 0.32 : 0.16;
+    ctx.fillStyle = "#0b1014";
+    ctx.beginPath();
+    ctx.ellipse(this.x + this.w / 2 - cam.x, this.shadowY - cam.y, diving ? 16 : 22, diving ? 5 : 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
   draw(ctx, cam) {
-    const name = this.state === "alert" ? "d_alert" : `d_hover${Math.floor(this.anim) % 2}`;
-    const spr = IMG[name];
+    const name = this.state === "alert" ? "b_swoop" : `b_fly${Math.floor(this.anim) % 2}`;
+    this.drawShadow(ctx, cam);       // under the bird, so the bird stays on top
+    const spr = (this.dir < 0 ? flip(name) : IMG[name]) || IMG[name];
+    if (!spr) return;
     ctx.drawImage(spr, Math.round(this.x + this.w / 2 - spr.width / 2 - cam.x), Math.round(this.y + this.h - spr.height - cam.y));
     if (this.state === "alert") {
       const a = IMG.ui_alert;
       ctx.drawImage(a, Math.round(this.x + this.w / 2 - a.width / 2 - cam.x), Math.round(this.y - 12 - cam.y));
     }
-    // searchlight pool on the ground below
-    ctx.globalAlpha = this.state === "alert" ? 0.22 : 0.12;
-    ctx.fillStyle = this.state === "alert" ? "#CF5B45" : "#8FB6D6";
-    ctx.beginPath();
-    ctx.ellipse(this.x + this.w / 2 - cam.x, this.y + this.h + 8 - cam.y, 26, 8, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.globalAlpha = 1;
   }
 }
 
@@ -689,7 +723,7 @@ export class Plate {
     this.pressed = false;
   }
 
-  /** Things that can hold a plate down: crates, hunters and vent pitchers. */
+  /** Things that can hold a plate down: crates, creepers and vent pitchers. */
   weights(level) {
     const out = [...level.blocks];
     for (const e of level.entities) if (typeof e.frozen === "number" && !e.taken) out.push(e);
@@ -699,7 +733,7 @@ export class Plate {
   update(dt, level) {
     const wasPressed = this.pressed;
     if (this.wants === "frozen") {
-      // an ice-locked hunter: it has to be frozen while it is on the plate, so
+      // an ice-locked creeper: it has to be frozen while it is over the plate, so
       // the puzzle is where you shoot, not how fast you run
       this.pressed = this.weights(level).some((e) => e.frozen > 0 && !e.taken && overlap(this, e));
     } else {
@@ -1287,8 +1321,8 @@ export function makeEntity(cfg, level) {
     case "processor": return new Processor(cfg);
     case "seam": case "deposit": return new Deposit(cfg);
     case "plant": return new Plant(cfg);
-    case "predator": return new Predator(cfg, diff);
-    case "drone": return new Drone(cfg, diff);
+    case "creeper": return new Creeper(cfg, diff);
+    case "bird": return new Bird(cfg, diff);
     case "block": return new Block(cfg);
     case "plate": return new Plate(cfg);
     case "door": return new Door(cfg, level);

@@ -13,8 +13,8 @@ const FILES = [
   "tile_plate", "tile_plate_on", "spr_rock", "spr_plant", "spr_crystal",
   // the pilot: EVA shell on the surface, flight suit aboard the ship
   ...PILOT_FILES,
-  "m_walk0", "m_walk1", "m_walk2", "m_walk3", "m_alert",
-  "d_hover0", "d_hover1", "d_alert",
+  "cr_walk0", "cr_walk1", "cr_walk2", "cr_walk3", "cr_snap",
+  "b_fly0", "b_fly1", "b_swoop",
   "spr_moria", "spr_orb", "spr_shard", "spr_fuel", "spr_part",
   "spr_block", "spr_door", "spr_beacon", "spr_beacon_on",
   "spr_ship", "spr_ship_fly", "spr_seam", "spr_transmission",

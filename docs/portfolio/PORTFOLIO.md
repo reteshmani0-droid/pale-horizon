@@ -37,16 +37,16 @@ The player wakes from cryo-sleep on **Exxos**, a jungle world 142 million light-
 cracked cryo-pod and empty fuel tanks. Aboard the crashed ship, the AI assistant **Cyu** opens three
 destinations:
 
-1. **Exxos — Stealth World.** A planet of predators with heightened senses. They see in a cone in front of
-   them and hear you when you run. The player sneaks through tall grass, takes three fuel cells, and
-   reaches the far beacon.
+1. **Exxos — Stealth World.** A planet of predators with heightened senses. Its floor is a field of
+   carnivorous plants: creepers feel you through the soil in a cone ahead of them and hear you when you
+   run. The player sneaks through tall grass, takes three fuel cells, and reaches the far beacon.
 2. **The World of Regrets.** Boss **Moria** tore his own soul out of his body. The player pushes rune blocks
    onto pressure plates to open three seals, then carries Moria's soul orb back to his body. This is
    deliberately **not a fight** — there is no attack button in the game. Moria hands over the fuel and a
    cryo-pod part once his soul is home.
 3. **World 3 — The Hollow Signal.** A storm world whose power grid died with its people. The player carries
    ember charges from chargers to relays to raise bridges and open a sealed gate, while wind gusts shove
-   them around and searchlight drones sweep the platforms.
+   them around and birds sweep the platforms from above.
 
 Between worlds the player can fly the **Asteroid Run**, a 45-second dodge route that pays salvage.
 With 9 fuel cells and 3 pod parts aboard, the player repairs the cryo-pod, learns Cyu's secret, and chooses
@@ -79,10 +79,11 @@ nothing on screen is violent or frightening.
 
 - **Goal.** Collect 3 fuel cells and 1 cryo-pod part on each of the three worlds, return to the ship,
   install the pod hatch, then launch and choose your ending.
-- **Stealth.** Predators see a translucent cone in front of them and hear running. Hold the sneak key to
-  move quietly — sneaking halves the range at which predators notice you. Standing still inside tall grass
-  makes you invisible to them and the HUD reads **HIDDEN**. Drones ignore grass but walls and platforms
-  block their view.
+- **Stealth.** Creepers cast a translucent ground cone in front of them and hear running. Hold the sneak
+  key to move quietly — sneaking halves the range at which they notice you. Standing still inside tall
+  grass makes you invisible to them and the HUD reads **HIDDEN**. Birds patrol above the cover, so grass
+  will not hide you from them, but walls and platforms block their view. A catch is not damage: the creeper
+  pulls the pilot underground, the bird lifts them off the ground, and the level restarts from the last beacon.
 - **Movement kit.** Run, jump (hold for height), sneak, **dash** (`Q`/`SHIFT`, one extra dash in mid-air),
   and **wall-slide + wall-jump** to climb narrow shafts. Nothing in the kit attacks; every skill is for
   reaching places the player could not otherwise reach or avoiding being seen.
@@ -122,8 +123,8 @@ The storyboard was generated directly from the game's own pixel art so that it m
 panel for panel. Full-size sheet: [`storyboard.png`](storyboard.png).
 
 Six beats: (1) the crash and cryo-wake, (2) the Cryo Bay hub and its stations, (3) Exxos stealth with a
-predator's vision cone, (4) the World of Regrets rune-block puzzle and Moria with his separated soul,
-(5) the Hollow Signal relay bridge and searchlight drone, (6) the ending choice.
+creeper's ground cone, (4) the World of Regrets rune-block puzzle and Moria with his separated soul,
+(5) the Hollow Signal relay bridge with a bird overhead, (6) the ending choice.
 
 | Panel | Beat | Design intent |
 | --- | --- | --- |

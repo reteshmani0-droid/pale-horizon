@@ -79,7 +79,7 @@ export const TECH = {
   },
   freezeGun: {
     key: "freezeGun", name: "Cryo projector", short: "CRYO",
-    blurb: "Freezes hunters and vent pitchers solid for a few seconds. Lock one onto a frost plate and the seal opens.",
+    blurb: "Freezes creepers and vent pitchers solid for a few seconds. Lock one onto a frost plate and the seal opens.",
     cost: { biomass: 3, coolant: 2 },
   },
   extractor: {

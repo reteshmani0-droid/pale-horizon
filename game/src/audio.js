@@ -2,7 +2,7 @@
  * Audio: a small WebAudio studio.
  *  - mixer with separate master / music / sfx / ambience buses
  *  - music is scheduled ahead of the audio clock (no setInterval drift) and has
- *    a calm layer plus an "alert" layer for when hunters start looking
+ *    a calm layer plus an "alert" layer for when the wildlife starts looking
  *  - each world gets a procedural ambience bed (insects, drips, thunder, hum)
  *  - every sound in the game is synthesised: there are no audio files
  */
@@ -260,7 +260,7 @@ export function stopMusic() {
   music.intensity = 0;
 }
 
-/** 0 = calm, 1 = hunters are looking for you. */
+/** 0 = calm, 1 = something has noticed you. */
 export function setMusicIntensity(level) {
   music.intensity = level ? 1 : 0;
 }

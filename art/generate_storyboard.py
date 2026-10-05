@@ -63,7 +63,7 @@ def panel2():
     d = ImageDraw.Draw(p)
     d.rectangle([0, 0, PW, PH], fill=(14, 16, 30, 255))
     blit(p, "spr_ship", 60, 30, 1)
-    blit(p, "d_hover1", 20, 40, 1)
+    blit(p, "b_fly1", 20, 40, 1)
     blit(p, "p_idle0", 46, 58, 1)
     for x in range(0, PW, 8):
         p.alpha_composite(load("tile_metal").resize((8, 8), Image.NEAREST), (x, 76))
@@ -74,9 +74,10 @@ def panel3():
     p = ground_panel((14, 34, 44), (26, 74, 90))
     blit(p, "tile_grass_tuft", 30, 72, 1)
     blit(p, "p_sneak", 38, 60, 1)
-    blit(p, "m_walk1", 96, 66, 1)
+    # a creeper sits in the soil with its cone running along the ground
+    blit(p, "cr_walk1", 96, 64, 1)
     d = ImageDraw.Draw(p, "RGBA")
-    d.polygon([(100, 70), (150, 52), (150, 88)], fill=(242, 198, 94, 40))
+    d.polygon([(104, 80), (154, 66), (154, 94)], fill=(242, 198, 94, 40))
     return p
 
 
@@ -95,7 +96,7 @@ def panel5():
     blit(p, "p_idle0", 44, 60, 1)
     blit(p, "tile_platform", 60, 74, 1)
     blit(p, "tile_plate_on", 92, 74, 1)
-    blit(p, "d_alert", 100, 40, 1)
+    blit(p, "b_swoop", 98, 40, 1)
     return p
 
 
@@ -105,16 +106,16 @@ def panel6():
     d = ImageDraw.Draw(p, "RGBA")
     d.polygon([(0, PH), (PW, PH), (PW, 70), (0, 78)], fill=(9, 12, 26, 220))
     blit(p, "p_idle0", 24, 62, 1)
-    blit(p, "d_hover1", 60, 60, 1)
+    blit(p, "b_fly1", 60, 60, 1)
     return p
 
 
 CAPTIONS = [
     ("1. CRASH", "Cryo-sleep breaks. The hull is down on Exxos, 142 million light-years from Earth."),
     ("2. CRYO BAY", "Wake up with Cyu. NAV CONSOLE picks a world; the REPAIR BAY rebuilds the cryo pod."),
-    ("3. STEALTH WORLD", "Predators hunt by sight and sound. Sneak, hide in tall grass, take the fuel cells."),
+    ("3. STEALTH WORLD", "Creeper plants feel you through the soil. Sneak, hide in tall grass, take the fuel cells."),
     ("4. WORLD OF REGRETS", "Moria split his soul from his body. Push rune blocks onto plates, carry his soul home."),
-    ("5. THE HOLLOW SIGNAL", "World 3 storms. Carry embers to relays to raise bridges; dodge searchlight drones."),
+    ("5. THE HOLLOW SIGNAL", "World 3 storms. Carry embers to relays to raise bridges; watch the birds overhead."),
     ("6. THE CHOICE", "Nine stolen fuel cells and one AI confession: give them back, or fly home."),
 ]
 
@@ -149,7 +150,7 @@ def main():
     t = stars((6, 8, 20)).resize((480, 288), Image.NEAREST)
     blit(t, "spr_ship", 150, 90, 2)
     blit(t, "p_idle0", 70, 190, 2)
-    blit(t, "d_hover1", 240, 190, 2)
+    blit(t, "b_fly1", 240, 190, 2)
     t.convert("RGB").save(OUT / "title_art.png")
     print("wrote", OUT / "storyboard.png", "and", OUT / "title_art.png")
 

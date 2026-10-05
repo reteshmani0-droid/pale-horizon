@@ -62,7 +62,7 @@ export const TUTORIAL = {
   intro: [
     { name: "SIGN 1", text: "RUN with ARROWS or A/D. JUMP with SPACE - hold it to jump higher, tap it for a short hop." },
     { name: "SIGN 2", text: "HOLD DOWN to sneak. Sneaking is slower but quiet, and it hides you in tall grass on the worlds below." },
-    { name: "SIGN 3", text: "Nothing in this game can be fought. If a hunter or a drone reaches you, the descent restarts at the last beacon - so light the beacons." },
+    { name: "SIGN 3", text: "Nothing in this game can be fought. If a creeper takes your feet or a bird takes you off the ground, the descent restarts at the last beacon - so light the beacons." },
     { name: "SIGN 4", text: "The PRACTICE RIG ahead processes a nutrient pod into a ration. Press USE at the rig and run the filtration puzzle. That is the whole economy of the game." },
     { name: "SIGN 5", text: "The DASH, DOUBLE JUMP and GRIP GLOVES are not free: the RESEARCH BENCH aboard the ship builds them, and it is paid in material - raw stuff off the worlds, refined at the field processors." },
   ],
@@ -167,7 +167,7 @@ export const M1 = {
   h: 23,
   music: "jungle",
   objective: "Take 3 fuel cells and 3 nutrient pods to the far beacon",
-  sub: "Vent gardens, tall grass, and predators that hunt by sound",
+  sub: "Vent gardens, tall grass, and creepers that feel your footsteps",
   solids: [
     [0, GROUND, 40, 3],
     [44, GROUND, 26, 3],
@@ -219,13 +219,13 @@ export const M1 = {
     ...TRANSMISSIONS.filter((e) => e.world === 'm1').map((e) => ({ t: 'transmission', ...e })),
     { t: "beacon", x: 6, y: 19 },
     { t: "beacon", x: 143, y: 19, exit: true },
-    { t: "predator", x: 18, y: 18, range: 4, dir: -1, vision: 120, hearing: 110 },
-    { t: "predator", x: 26, y: 18, range: 5, dir: 1, vision: 130, hearing: 120 },
-    { t: "predator", x: 50, y: 18, range: 4, dir: -1, vision: 140, hearing: 130 },
-    { t: "predator", x: 82, y: 18, range: 6, dir: 1, vision: 140, hearing: 140 },
-    { t: "predator", x: 96, y: 18, range: 4, dir: -1, vision: 130, hearing: 120 },
-    { t: "predator", x: 126, y: 18, range: 5, dir: 1, vision: 140, hearing: 130 },
-    { t: "drone", x: 36, y: 13, range: 7, vision: 150 },
+    { t: "creeper", x: 18, y: 18, range: 4, dir: -1, vision: 120, hearing: 110 },
+    { t: "creeper", x: 26, y: 18, range: 5, dir: 1, vision: 130, hearing: 120 },
+    { t: "creeper", x: 50, y: 18, range: 4, dir: -1, vision: 140, hearing: 130 },
+    { t: "creeper", x: 82, y: 18, range: 6, dir: 1, vision: 140, hearing: 140 },
+    { t: "creeper", x: 96, y: 18, range: 4, dir: -1, vision: 130, hearing: 120 },
+    { t: "creeper", x: 126, y: 18, range: 5, dir: 1, vision: 140, hearing: 130 },
+    { t: "bird", x: 36, y: 13, range: 7, vision: 150 },
     { t: "pickup", x: 19, y: 12, type: "fuel" },
     { t: "pickup", x: 53, y: 13, type: "fuel" },
     { t: "pickup", x: 123, y: 15, type: "fuel" },
@@ -247,12 +247,12 @@ export const M1 = {
     { t: "plant", x: 100, y: 19, reach: 28 },
     { t: "plant", x: 116, y: 19, reach: 26 },
     { t: "plant", x: 133, y: 19, reach: 26 },
-    // the cold seal: freeze the hunter while it is standing on the plate and
+    // the cold seal: freeze a creeper while it is lying over the plate and
     // the cache past the beacon opens. Nothing on the path to the exit depends
     // on it - the cryo projector is the key, and that is a build.
     { t: "plate", x: 140, y: 19, group: 5, wants: "frozen" },
     { t: "door", x: 144, y: 18, h: 2, group: 5 },
-    { t: "predator", x: 137, y: 18, range: 4, dir: 1, vision: 130, hearing: 120 },
+    { t: "creeper", x: 137, y: 18, range: 4, dir: 1, vision: 130, hearing: 120 },
     { t: "seam", x: 145, y: 19, material: "biomass", amount: 3, label: "VENT SEAM" },
     // deep seams: the extractor rig at the research bench is what opens these
     { t: "seam", x: 67, y: 19, material: "biomass", amount: 3, label: "ROOT SEAM" },
@@ -260,12 +260,12 @@ export const M1 = {
   ],
   start: { x: 4, y: 18 },
   intro: [
-    { name: "BRIEF", text: "Exxos - breathable air, aggressive wildlife. The predators hunt by sight and by sound, and there is nothing aboard this ship that can answer them." },
+    { name: "BRIEF", text: "Exxos - breathable air, aggressive flora and fauna. The creepers feel footsteps through the soil and fold whatever they reach under the roots; the birds hunt by sight from above. There is nothing aboard this ship that can answer either of them." },
     { name: "BRIEF", text: "Sneaking (hold DOWN) keeps you quiet. Tall grass hides you completely, if you stay still inside it. If one reaches you, the descent restarts at your last beacon." },
     { name: "BRIEF", text: "Three fuel cells are scattered here, and the vent gardens are covered in nutrient pods - the bio reactor aboard the ship runs on them once the FILTRATION RIG has cleaned them." },
     { name: "BRIEF", text: "One pod is sealed behind a ridge of old growth. Push the boulder onto the plate to open it." },
     { name: "BRIEF", text: "Raw material also hides in deep seams - solid rock to a hand. The EXTRACTOR RIG built at the research bench bites through them: stand on the seam and hold USE." },
-    { name: "BRIEF", text: "The frost-blue plate beyond the exit only responds to something frozen. Lure a hunter onto it, then use the cryo projector to open the optional seam cache." },
+    { name: "BRIEF", text: "The frost-blue plate beyond the exit only responds to something frozen. Let a creeper crawl far enough to lie over it, then use the cryo projector to open the optional seam cache." },
     { name: "BRIEF", text: "Watch the ground: the vent pitchers sit flush with it until something warm walks over them, and then they take it under. The cryo projector freezes one solid." },
   ],
 };
@@ -431,9 +431,9 @@ export const M3 = {
     { t: "door", x: 34, y: 19, w: 4, h: 1, group: 1, source: "relay", invert: true },
     { t: "door", x: 68, y: 19, w: 4, h: 1, group: 2, source: "relay", invert: true },
     { t: "door", x: 90, y: 16, h: 4, group: 2, source: "relay" },
-    { t: "drone", x: 44, y: 13, range: 6, vision: 150 },
-    { t: "drone", x: 78, y: 12, range: 5, vision: 150 },
-    { t: "drone", x: 112, y: 13, range: 6, vision: 155 },
+    { t: "bird", x: 44, y: 13, range: 6, vision: 150 },
+    { t: "bird", x: 78, y: 12, range: 5, vision: 150 },
+    { t: "bird", x: 112, y: 13, range: 6, vision: 155 },
     { t: "platform", x: 121, y: 18, tx: 121, ty: 12, len: 2, speed: 0.5 },
     { t: "pickup", x: 21, y: 16, type: "fuel" },
     { t: "pickup", x: 84, y: 14, type: "fuel" },
@@ -456,7 +456,7 @@ export const M3 = {
   intro: [
     { name: "BRIEF", text: "Unnamed on every chart - the Hollow Signal, on a glacier that has not thawed in a century. Its power grid died and the storms moved in." },
     { name: "BRIEF", text: "Carry an ember charge (USE) to a relay and the dormant bridges wake. Winds will shove you - lean into them." },
-    { name: "BRIEF", text: "Three searchlight drones still patrol for a signal nobody has sent in a hundred years." },
+    { name: "BRIEF", text: "Three birds still ride the thermals over the ice, hunting anything that moves against the white." },
     { name: "BRIEF", text: "The cryo crystals the pod needs are in the ice. Cut three, then hold the THERMAL CRUCIBLE in its band until they run." },
   ],
   onComplete: [

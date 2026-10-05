@@ -253,8 +253,10 @@ export function drawPortrait(name) {
   g.clearRect(0, 0, c.width, c.height);
   g.fillStyle = "#151A21";
   g.fillRect(0, 0, c.width, c.height);
-  const key = name === "MORIA" ? "spr_moria" : name === "ASTRONAUT" ? "p_idle0" : "d_hover1";
-  const src = IMG[key] || IMG.d_hover1;
+  // MORIA shows his face, the pilot shows the suit; anything else speaking is
+  // the ship's bird that follows the pilot between worlds
+  const key = name === "MORIA" ? "spr_moria" : name === "ASTRONAUT" ? "p_idle0" : "b_fly1";
+  const src = IMG[key] || IMG.p_idle0;
   if (!src) return;
   const scale = Math.max(1, Math.floor(Math.min(c.width / src.width, c.height / src.height)));
   const w = src.width * scale;
@@ -396,8 +398,13 @@ export function toast(msg, ms = 1800) {
   UI.toastTimer = setTimeout(() => t.classList.add("hidden"), ms);
 }
 
-export function flash(on) {
+/**
+ * Full-screen tint. "hurt" darkens the edges instead of cutting to black, so a
+ * catch never hides the animation of the pilot being taken.
+ */
+export function flash(on, kind = "") {
   const f = $("flash");
+  f.classList.toggle("hurt", Boolean(on) && kind === "hurt");
   f.style.opacity = on ? "1" : "0";
 }
 

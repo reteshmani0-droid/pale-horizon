@@ -90,9 +90,13 @@
 
   <div id="toast" class="layer toast hidden"><span id="toast-text"></span></div>
   <div id="flash" class="layer flash"></div>
+  <!-- a small slip, not a screen: the catch animation plays behind it -->
   <div id="caught" class="layer hidden">
-    <h2>CAUGHT</h2>
-    <p id="caught-line">RESTARTING THE DESCENT</p>
+    <div class="slip">
+      <h2>CAUGHT</h2>
+      <p id="caught-line">RESTARTING THE DESCENT</p>
+      <small>back to the last beacon</small>
+    </div>
   </div>
 
   <!-- touch controls for tablets -->

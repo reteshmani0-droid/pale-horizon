@@ -77,7 +77,7 @@ export const DIFFICULTY = {
   standard: {
     id: "standard",
     name: "Standard",
-    blurb: "The intended balance: predators notice you, puzzles bite, fuel is earned.",
+    blurb: "The intended balance: creepers notice you, birds patrol above, puzzles bite, fuel is earned.",
     masks: 5,
     enemySpeed: 1,
     vision: 1,
