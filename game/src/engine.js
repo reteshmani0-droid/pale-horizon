@@ -518,6 +518,58 @@ export function drawBackdrop(ctx, theme, cam, t) {
   }
 }
 
+/**
+ * Height of a planet limb at x. The surface is a shallow arc instead of a slab:
+ * it falls away toward both frame edges, so a horizon never reads as a wall and
+ * a landing never looks like it happens inside a box. Ground clutter, furrows
+ * and landing ships are all placed against this curve, and every movement bound
+ * in a surface beat stays invisible.
+ */
+export function groundAt(x, horizon = VIEW_H - 50, drop = 34, width = VIEW_W) {
+  const q = (x - width / 2) / (width / 2);
+  return horizon + q * q * drop;
+}
+
+/**
+ * Fill the planet below its limb and light the crossing edge. `rim` paints a
+ * soft band of reflected light just above the horizon. Nothing here draws a
+ * vertical face or a straight slab: the curve is the planet.
+ */
+export function drawPlanetGround(ctx, { horizon = VIEW_H - 50, drop = 34, fill = "#131b20", edge = null, rim = null } = {}) {
+  const scale = Math.abs(ctx.getTransform().a) || 1;
+  const W = Math.max(VIEW_W, ctx.canvas.width / scale);
+  const H = Math.max(VIEW_H, ctx.canvas.height / scale);
+  const limb = () => {
+    ctx.beginPath();
+    for (let x = -40; x <= W + 40; x += 8) {
+      const y = groundAt(x, horizon, drop);
+      if (x === -40) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+  };
+  limb();
+  ctx.lineTo(W + 40, H + 40);
+  ctx.lineTo(-40, H + 40);
+  ctx.closePath();
+  ctx.fillStyle = fill;
+  ctx.fill();
+  if (rim) {
+    ctx.save();
+    ctx.globalAlpha = 0.16;
+    limb();
+    ctx.strokeStyle = rim;
+    ctx.lineWidth = 7;
+    ctx.stroke();
+    ctx.restore();
+  }
+  if (edge) {
+    limb();
+    ctx.strokeStyle = edge;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+}
+
 /** Vignette + scanline feel drawn on the canvas itself (keeps the DOM light). */
 export function drawVignette(ctx, strength = 0.5) {
   const g = ctx.createRadialGradient(VIEW_W / 2, VIEW_H / 2, VIEW_H * 0.35, VIEW_W / 2, VIEW_H / 2, VIEW_H * 0.85);

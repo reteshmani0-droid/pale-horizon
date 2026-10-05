@@ -112,8 +112,12 @@ The lander stays crashed on Exxos; its intact and wrecked sprites share one hull
 The smaller escape pod has the same design when parked and during every travel leg.
 
 Each world has distinct departure and return shots, blue drive flames and a wormhole.
-Exxos carries drifting spores; Regrets banks through abandoned towers; the glacier has
-sleet and aurora. Space skips cinematic shots **but cannot skip an asteroid crossing**.
+Every launch climbs clear of the planet — the ground falls away under the pod — and every
+arrival is a nosedive from orbit followed by a long scrape to a standstill across the
+surface, leaving a groove behind it. Exxos carries drifting spores; Regrets banks through
+abandoned towers; the glacier has sleet and aurora. A planet is drawn as a curved limb,
+never a flat wall: the pod's limits at the edges of a beat are invisible ones.
+Space skips cinematic shots **but cannot skip an asteroid crossing**.
 Losing all shields restarts the crossing checkpoint; ESC turns back without losing materials.
 
 Regrets adds a two-crate seal under a low roof, a three-second running gate with a visible

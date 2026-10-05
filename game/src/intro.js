@@ -1,18 +1,27 @@
 /**
- * The opening. Five beats, no dialogue box: approach from orbit, atmospheric
- * entry, the impact, waking in the pod, and the navigation read-out that tells
- * you exactly how far from home you are. The last beat hands control over to
- * the ship interior, which is where the game actually starts.
+ * The opening. Five beats, no dialogue box: approach from orbit, the nosedive
+ * that tears the hull open, the long scrape across the surface, waking in the
+ * pod, and the navigation read-out that tells you exactly how far from home you
+ * are. The last beat hands control over to the ship interior, which is where
+ * the game actually starts.
+ *
+ * The planet is drawn as a curved limb rather than a flat slab, so the crash
+ * reads as a ship biting into a world instead of sliding along a wall; the
+ * trench behind it is recorded where the hull actually touches.
  *
  * Extras (ESC or the pause key) skip a beat; the whole thing is under thirty
  * seconds and rewatchable from the test deck.
  */
 import { IMG } from "./assets.js";
-import { input, Particles, text, drawBackdrop, drawVignette, VIEW_W, VIEW_H } from "./engine.js";
+import { input, Particles, text, drawBackdrop, drawPlanetGround, groundAt, drawVignette, VIEW_W, VIEW_H } from "./engine.js";
 import { sfx, startAmbience, stopAmbience, stopMusic } from "./audio.js";
 import { showHud, hideTouch, flash } from "./ui.js";
 
 const STARFIELD = { x: 0 };
+const clamp01 = (v) => Math.max(0, Math.min(1, v));
+const ease = (v) => { const t = clamp01(v); return t * t * (3 - 2 * t); };
+const HORIZON = 300;   // the surface the ship ends up on
+const DROP = 26;       // how far that surface falls away at the frame edges
 
 export class IntroScene {
   constructor(game, onDone) {
@@ -24,6 +33,7 @@ export class IntroScene {
     this.done = false;
     this.left = false;
     this.particles = new Particles(200);
+    this.trail = [];             // where the hull has actually touched down
     stopMusic();
     stopAmbience();
     startAmbience("space");
@@ -32,7 +42,7 @@ export class IntroScene {
     flash(false);
     this.stages = [
       { name: "APPROACH", dur: 6.4 },
-      { name: "ENTRY", dur: 5.2 },
+      { name: "NOSEDIVE", dur: 5.2 },
       { name: "SURFACE SKID", dur: 4.8 },
       { name: "WAKE", dur: 4.6 },
       { name: "STATUS", dur: 9.0 },
@@ -59,9 +69,38 @@ export class IntroScene {
     if (this.done || this.left) return;
     this.t += dt;
     this.particles.update(dt);
-    if (this.index === 2 && this.t < 3.6) {
+    // The nosedive: compressed air burning off the leading edge, every frame.
+    if (this.index === 1) {
+      const d = this.divePose(this.t);
+      // velocities are per frame at 60fps: Particles.update scales by dt*60
+      for (let i = 0; i < 2; i++) {
+        this.particles.add({
+          x: d.x + 150 + Math.random() * 120, y: d.y + 30 + Math.random() * 60,
+          vx: 1 + Math.random() * 1.6, vy: -.5 - Math.random() * 1.1,
+          color: i ? "#e08c50" : "#fff0d0", life: .32, size: 1, gravity: 0,
+        });
+      }
+    }
+    // The skid: sparks off the nose, a dust plume, and gravel thrown clear.
+    if (this.index === 2 && this.t < 3.9) {
       const pose = this.crashPose(this.t);
-      for (let i = 0; i < 3; i++) this.particles.add({ x: pose.x + 30 + Math.random() * 70, y: 311, vx: -2 - Math.random() * 4, vy: -Math.random() * 3, life: .7, color: i === 0 ? '#ffd6a0' : '#7f957b', size: i === 0 ? 1 : 3, gravity: .08 });
+      const nose = pose.x + 250;
+      this.trail.push({ x: nose, y: groundAt(nose, HORIZON, DROP) });
+      if (this.trail.length > 400) this.trail.shift();
+      const fast = this.t < 3.2;
+      this.shake = Math.max(this.shake, fast ? .12 : 0);
+      const n = fast ? 4 : 1;
+      for (let i = 0; i < n; i++) {
+        const x = nose - 160 + Math.random() * 200;
+        this.particles.add({
+          x, y: groundAt(x, HORIZON, DROP) - Math.random() * 14,
+          vx: fast ? -(0.5 + Math.random() * 1.8) : (Math.random() - .5) * .5,
+          vy: -.25 - Math.random() * 1.3,
+          life: .6 + Math.random() * .8, size: i === 0 && fast ? 1 : 2 + (i % 2),
+          color: i === 0 && fast ? "#ffd6a0" : (i % 2 ? "#9aa08c" : "#6f7360"),
+          gravity: .1,
+        });
+      }
     }
     this.shake = Math.max(0, this.shake - dt);
     if (input.pressed("use") || input.pressed("jump") || input.pressed("pause")) { this.skip(); return; }
@@ -79,7 +118,7 @@ export class IntroScene {
     const t = this.t;
     switch (this.index) {
       case 0: this.drawApproach(ctx, t); break;
-      case 1: this.drawEntry(ctx, t); break;
+      case 1: this.drawDive(ctx, t); break;
       case 2: this.drawImpact(ctx, t); break;
       case 3: this.drawWake(ctx, t); break;
       default: this.drawStatus(ctx, t); break;
@@ -137,56 +176,110 @@ export class IntroScene {
     ctx.restore();
   }
 
-  /** Entry: the hull coming apart, the frame shaking. */
-  drawEntry(ctx, t) {
-    const sky = ctx.createLinearGradient(0, 0, 0, VIEW_H);
-    sky.addColorStop(0, "#0a1018");
-    sky.addColorStop(0.55, "#2a1f18");
-    sky.addColorStop(1, "#4a2a1a");
-    ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, VIEW_W, VIEW_H);
-    const jitter = this.shake * 4;
-    for (let i = 0; i < 26; i += 1) {
-      const y = (i * 41 + t * 260) % (VIEW_H + 60);
-      ctx.fillStyle = `rgba(232,140,80,${0.05 + (i % 3) * 0.04})`;
-      ctx.fillRect(0, Math.round(y), VIEW_W, 2 + (i % 2));
-    }
-    const q = Math.min(1, t / 5.2);
-    const x = 220 - q * 260 + Math.sin(t * 9) * jitter;
-    const y = 100 + q * 96 + Math.cos(t * 7) * jitter;
-    this.drawHull(ctx, x, y, .20 * (1 - q));
-    // The surface rises continuously into view before contact.
-    ctx.fillStyle = '#203529';
-    ctx.fillRect(0, 410 - q * 98, VIEW_W, VIEW_H);
-    ctx.fillStyle = "#E8A05C";
-    ctx.fillRect(Math.round(x - 10 - t * 4), Math.round(y + 16), 10 + t * 4, 6);
-    ctx.fillStyle = "#CF5B45";
-    ctx.fillRect(Math.round(x + 2), Math.round(y + 2), 3, 3);
-    text(ctx, "HULL TEMPERATURE CRITICAL", VIEW_W / 2, 60, "#CF5B45", "center", 11);
-    text(ctx, "the bay hatch is gone", VIEW_W / 2, 78, "#e0b6a4", "center", 9);
+  /** Where the hull is during the dive: nose down, surface rising to meet it. */
+  divePose(t) {
+    const q = ease(t / 4.2);
+    const horizon = VIEW_H + 250 - q * 300;
+    const lowest = (angle) => 144 * Math.sin(angle) + 72 * Math.cos(angle);
+    const angle = .30 + q * .55;
+    const y = 10 + (horizon - lowest(angle) - 22 - 10) * q * q;
+    return { x: 240 - q * 150, y, angle, q, horizon, alt: 96 - q * 92 };
   }
 
+  /**
+   * Nosedive: the hull is already through the worst of it, driving at the
+   * surface nose-first with the air burning off its leading edge.
+   */
+  drawDive(ctx, t) {
+    const d = this.divePose(t);
+    drawBackdrop(ctx, "space", { x: t * 26, y: 0 }, t);
+    // the sky it is falling into fades in over the last third of the drop
+    ctx.globalAlpha = clamp01(d.q * 1.5);
+    drawBackdrop(ctx, "jungle", { x: t * 20, y: 0 }, t);
+    ctx.globalAlpha = 1;
+    drawPlanetGround(ctx, { horizon: d.horizon, drop: DROP, fill: "#203529", edge: "#65785e", rim: "#e8b07a" });
+    // Bow shock on the leading face: an oval of compressed air at the nose and
+    // streaks peeled back over the hull, never a floating rectangle.
+    const nx = d.x + 144 + Math.cos(d.angle) * 150;
+    const ny = d.y + 72 + Math.sin(d.angle) * 150;
+    ctx.save();
+    ctx.translate(nx, ny);
+    ctx.rotate(d.angle);
+    ctx.fillStyle = `rgba(232,140,80,${.10 + d.q * .18})`;
+    ctx.beginPath(); ctx.ellipse(12, 0, 44, 24, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = `rgba(255,228,190,${.06 + d.q * .12})`;
+    ctx.beginPath(); ctx.ellipse(8, 0, 24, 12, 0, 0, Math.PI * 2); ctx.fill();
+    for (let i = 0; i < 5; i++) {
+      ctx.globalAlpha = (.18 - i * .03) * (1 + d.q);
+      ctx.fillStyle = i < 2 ? "#ffe9c4" : "#c9773f";
+      ctx.fillRect(-70 - i * 34 + Math.sin(t * 22 + i) * 4, -34 + i * 16, 46 + i * 10, 2 + (i % 2));
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+    const jitter = this.shake * 4;
+    this.drawHull(ctx, d.x + Math.sin(t * 11) * jitter, d.y + Math.cos(t * 9) * jitter, d.angle);
+    ctx.fillStyle = "#CF5B45";
+    ctx.fillRect(Math.round(d.x + 60), Math.round(d.y + 8), 3, 3);
+    text(ctx, "HULL TEMPERATURE CRITICAL", VIEW_W / 2, 60, "#CF5B45", "center", 11);
+    text(ctx, `ALT ${Math.round(d.alt)} km · NOSE DOWN · BRACE`, VIEW_W / 2, 78, "#e0b6a4", "center", 9);
+  }
+
+  /**
+   * Contact and the long scrape: the nose digs in, the hull skips once, then it
+   * grinds along the curve shedding sparks, dust and gravel until it stops.
+   */
   crashPose(t) {
     const q = Math.min(1, t / 3.6);
     const slowdown = 1 - Math.pow(1 - q, 3);
-    const settle = Math.max(0, Math.min(1, (t - 3.2) / .4));
-    return { x: -40 + slowdown * 300, y: 196 - settle * 22 + Math.sin(t * 15) * (1 - q) * 3, angle: Math.sin(t * 9) * .045 * (1 - q) };
+    const settle = Math.max(0, Math.min(1, (t - 3.1) / .7));
+    const x = -40 + slowdown * 300;
+    const gy = groundAt(x + 150, HORIZON, DROP);
+    const skip = Math.abs(Math.sin(t * 16)) * 7 * Math.max(0, 1 - t / 1.3);
+    return {
+      x, gy, skip,
+      y: gy - 136 + skip - settle * 6,
+      angle: .26 * Math.max(0, 1 - t / 1.5) - .03 - Math.sin(t * 12) * .02 * (1 - q),
+    };
   }
 
-  /** Contact, long decelerating skid, trench, sparks, then a quiet settling hull. */
+  /** The trench, its thrown berm, and the gravel the hull left along it. */
+  drawTrench(ctx) {
+    if (this.trail.length < 2) return;
+    const line = (dy, width, color) => {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      this.trail.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y + dy) : ctx.moveTo(p.x, p.y + dy)));
+      ctx.stroke();
+    };
+    line(6, 11, "#3c4a38");        // jungle soil turned over by 288px of hull
+    line(7, 3, "#131a15");         // the cut the nose ploughed
+    line(-6, 3, "#7d8a6b");        // berm thrown up on the trailing side
+    ctx.fillStyle = "#4d5347";
+    for (let i = 0; i < this.trail.length; i += 9) {
+      const p = this.trail[i];
+      ctx.fillRect(Math.round(p.x), Math.round(p.y - 10 - (i % 5)), 2 + (i % 3), 2);
+    }
+    ctx.fillStyle = "#83907a";
+    for (let i = 4; i < this.trail.length; i += 13) {
+      const p = this.trail[i];
+      ctx.fillRect(Math.round(p.x - 22 - (i % 9)), Math.round(p.y + 9 + (i % 3)), 3, 2);
+    }
+  }
+
   drawImpact(ctx, t) {
     const p = this.crashPose(t);
-    drawBackdrop(ctx, 'jungle', { x: p.x * .6, y: 0 }, t);
-    ctx.fillStyle = '#203529'; ctx.fillRect(0, 312, VIEW_W, 56);
-    ctx.fillStyle = '#101912'; ctx.fillRect(0, 311, Math.max(0, p.x + 100), 7);
-    ctx.fillStyle = '#65785e'; ctx.fillRect(0, 311, Math.max(0, p.x + 90), 2);
+    drawBackdrop(ctx, "jungle", { x: p.x * .6, y: 0 }, t);
+    drawPlanetGround(ctx, { horizon: HORIZON, drop: DROP, fill: "#203529", edge: "#65785e", rim: "#e8b07a" });
+    this.drawTrench(ctx);
     this.drawHull(ctx, p.x, p.y, p.angle, t >= 3.6);
     this.particles.draw(ctx, { x: 0, y: 0 });
     // Heat haze and dust fade after the ship has stopped; no full-screen whiteout.
-    ctx.globalAlpha = Math.max(0, 1 - t / 4.8) * .2;
-    ctx.fillStyle = '#b2ad86'; ctx.fillRect(0, 285, Math.max(0, p.x + 80), 25);
+    ctx.globalAlpha = Math.max(0, 1 - t / 4.8) * .22;
+    ctx.fillStyle = "#b2ad86";
+    ctx.fillRect(0, HORIZON - 30, Math.max(0, p.x + 260), 30);
     ctx.globalAlpha = 1;
-    if (t > 3.6) text(ctx, 'DESCENT ENDED · EMERGENCY CRYO RELEASE', 320, 60, '#c9d4c9', 'center', 11);
+    if (t > 3.6) text(ctx, "DESCENT ENDED · EMERGENCY CRYO RELEASE", 320, 60, "#c9d4c9", "center", 11);
   }
 
   /** Wake: dark, one rectangle of light, and a line of type. */
