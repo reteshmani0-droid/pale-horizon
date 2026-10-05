@@ -1,0 +1,387 @@
+VIDEO GAME DESIGN
+
+OVERVIEW                                                        H. Video game demonstration video must be less than
+                                                                    five (minutes). A deduction of five (5) points total will
+Applying leadership and 21st century skills, participants           be incurred for a video that goes over the five (5)
+develop a video game that focuses on the annual                     minute time maximum. The timing of the video starts
+theme. The game must be interesting, exciting, visually             with the first image or sound presented. The timing of
+appealing, and intellectually challenging. The game must            the video ends with the last image or sound.
+have high artistic, educational, and social value. The
+rating of the game must meet the ESRB rating of E for           SEMIFINAL ROUND
+Everyone.                                                       A. A total of fifteen (15) minutes will be allocated for each
+
+The game and all required documentation must be                     team's on-site presentation and interview. Each team
+submitted online pre-conference. Semifinalist teams                 will be given five (5) minutes to give a presentation on
+will participate in an on-site presentation and interview           their video game. The remaining ten (10) minutes will
+to showcase their video game and to demonstrate                     be used for an interview session with the judges.
+the knowledge and expertise they gained during the
+development of the game.                                        ATTIRE
+
+The theme of the current year's game will be posted on          TSA competition attire is required for this event.
+the TSA website under Themes & Problems.
+                                                                PROCEDURE
+ELIGIBILITY                                                     PRE-CONFERENCE
+
+Five (5) teams per state may participate.                       A. Teams design an online video game.
+                                                                B. Teams design the game based on the annual
+TIME LIMITS
+PRE-CONFERENCE                                                      theme posted on the TSA website under Themes &
+                                                                    Problems.
+A. Participants review the TSA Honor Statement for              C. Video game URL, video game demonstration video
+    Competitive Events found in the General Rules.                  URL, and documentation portfolio PDF must be
+                                                                    submitted by 11:59pm ET on a designated date in mid-
+B. Participants review the Use of Generative Artificial             May.
+    Intelligence (GenAI) found in the General Rules.            D. Submission information and deadline will be provided
+                                                                    in January on the TSA website under Competition
+C. All components of the chapter's entry (video game                Updates.
+    URL, video game demonstration video URL, and
+    documentation PDF) must be finished, submitted,             PRELIMINARY ROUND
+    and accessible via the Internet by 11:59pm ET on a          A. A list of the twelve (12) semifinalists (in random order)
+    designated date mid-May.
+                                                                    will be posted on the first full day of the conference.
+D. Game submitted for evaluation must be greater
+    than three (3) minutes in length of play and must be        SEMIFINAL ROUND
+    interactive.                                                A. Two (2) representatives from each semifinalist team
+
+E. A deduction of five (5) points total will be incurred for a      report at the time and place stated in the conference
+    game that completes under the three (3) minute time             program to sign up for a presentation and interview
+    minimum.                                                        time.
+
+F. Timing of the game segment starts with the first image
+    or sound presented.
+
+G. Games must be playable from the deadline until the
+    end of the National TSA Conference.
+
+Technology Student Association (TSA) High School Competitive Events Guide for the 2027 and 2028 National TSA Conferences  373
+VIDEO GAME DESIGN
+
+B. No more than two (2) semifinalist team members                   5. Work that is not created by the team must have
+    report to the assigned time and place to present their              proper documentation, showing copyright
+    video game and to respond to questions about their                  permissions and/or license for usage in the game
+    documentation, game, the game's purpose, value,                     segment.
+    design, and rules.
+                                                                    6. Game instructions must be clear and
+C. Participants will present their presentation using                   understandable.
+    their own device. The device must be battery
+    powered (e.g., laptop, tablet). No electricity or Internet      7. Judges must be able to play the game to the third
+    connection is provided.                                             (3rd) level.
+
+D. The top ten (10) finalists are announced during the              8. Game submitted for evaluation must be greater
+    awards ceremony.                                                    than three (3) minutes in length of play and must
+                                                                        be interactive.
+REGULATIONS AND REQUIREMENTS
+                                                                    9. A deduction of five (5) points total will be incurred
+Students will work to develop their leadership and                      for a game that completes under the three
+21st century skills in the process of preparing for                     (3)-minute time minimum.
+and participating in this TSA competitive event. The
+development and application of those skills must be                 10. Timing of the game segment starts with the first
+evident in their submission, demonstration, and/or                      image or sound presented.
+communication pertaining to the entry.
+                                                                    11. Games must be playable from the submission
+PRE-CONFERENCE/PRELIMINARY ROUND                                        deadline until the end of the National TSA
+                                                                        Conference.
+A. All online game submissions must be a hyperlink to
+    the online game and be accessible for evaluation                12. Bonus points may be awarded for exceptional
+    by the deadline posted on the TSA website under                     game features or content.
+    Competition Updates. Participants may choose the
+    hosting site, but the hyperlink must point directly to      E. Video Game Demonstration Video
+    the entry. Entries that request access be granted will
+    not be judged.                                                  1. Demonstration video must include the following
+                                                                        components:
+B. Entries received, or changes made to submitted
+    entries after this deadline will not be judged.                     a. A tutorial for how to play the game.
+
+C. The URL must point to the team's entry. Entries                      b. Video game being played for at least one (1)
+    or demonstration videos that require a software                         level.
+    download, running an executable file (.exe), or a
+    request that access be granted will not be judged.                  c. Show the code, scripts, files, and game engine
+                                                                            used to create the game.
+D. Video Game:
+                                                                    2. Video must not exceed five (5) minutes.
+    1. Must be a hyperlink to the online game.
+                                                                    3. A deduction of five (5) points total will be incurred
+    2. Must be the original work of the team.                           for a game demonstration video that is over the
+                                                                        five (5) minute time maximum.
+    3. Games must be playable from all computers and
+        browsers.                                                   4. Video must not include any identifying information
+                                                                        other than the team's identification number.
+    4. When creating the game, the game must be
+        free of any weapons or violence as stated in                5. Video needs to be submitted using a URL.
+        the general rules. Please refer to the General
+        Rules and Regulations, H. Prohibited Materials,
+        References, and Images.
+
+374  Technology Student Association (TSA) High School Competitive Events Guide for the 2027 and 2028 National TSA Conferences
+                                                               VIDEO GAME DESIGN
+
+F. Documentation Portfolio:                                    GENERATIVE ARTIFICIAL INTELLIGENCE
+    1. Portfolio must include the following pages in a
+        multi-page PDF document in this order:                 Generative Artificial Intelligence (GenAI) is permitted
+        a. Title page with the event title, the title of the   for this event. Refer to the Use of Generative Artificial
+            video, the conference city and state, and the      Intelligence (GenAI) for Competitive Events found in the
+            year, and the team's identification number; one    General Rules and Regulations.
+            (1) page
+        b. Purpose and description of the game, the            STEM INTEGRATION
+            target audience, and a detailed explanation of
+            how to play the game, including a list of control  This event aligns with the STEM (Science, Technology,
+            functions; maximum of two (2) pages                Engineering, and Mathematics) educational standards.
+        c. A hand-drawn storyboard, which depicts the
+            design concept of the video game; pages as         LEADERSHIP AND 21ST CENTURY SKILLS
+            needed
+        d. Student Copyright Checklist (2027 & 2028            This event provides opportunity for students to build
+            Forms Appendix); one (1) page                      and develop leadership and 21st century skills including
+        e. Permission letters for the use of copyrighted       but not limited to ­ Communication, Collaboration/Social
+            material; pages as needed (if applicable).         Skills, Initiative, Problem Solving/Risk Taking, Critical
+        f. Resources and AI Reflection (see 2027 & 2028        Thinking, Perseverance/Grit, Creativity, Relationship
+            Forms Appendix); maximum of four (4) pages         Building/Teamwork, Dependability/Integrity, and
+                                                               Flexibility/Adaptability
+G. Bonus points may be awarded for exceptional game
+    features or content.                                       CAREERS RELATED TO THIS EVENT
+
+H. Teams will submit the URL to the video game, the URL        This competition has connections to one (1) or more of
+    to the video game demonstration video, and the PDF         the careers below:
+    of the documentation portfolio.
+                                                               · Animator
+EVALUATION                                                     · Computer programmer
+PRELIMINARY ROUND                                              · Electronic game designer
+                                                               · Electronic game technician
+A. First three (3) levels of the game                          · Writer
+B. Video game demonstration video
+C. Documentation portfolio
+D. Up to ten (10) bonus points may be added by the
+
+    judges for exceptional game features, or for content
+    showing exemplary educational and social value.
+
+SEMIFINAL ROUND
+A. Presentation
+B. Interview
+
+Refer to the official rating form for more information.
+
+Technology Student Association (TSA) High School Competitive Events Guide for the 2027 and 2028 National TSA Conferences  375
+Participant/Team ID# 
+
+VIDEO GAME DESIGN                                                                Go/No Go Specifications
+
+2027 & 2028 OFFICIAL RATING FORM                                                 · Before judging the entry, ensure that the items below are
+                                                                                   present; indicate presence with a check mark in the box.
+HIGH SCHOOL
+                                                                                 · If an item is missing, leave the box next to the item blank
+Judges: Using minimal (1-4 points), adequate (5-8 points), or exemplary (9-10      and place a check mark in the box labeled ENTRY NOT
+points) performance levels as a guideline in the rating form, record the           EVALUATED.
+scores earned for the event criteria in the column spaces to the right. The
+X1 or X2 notation in the criteria column is a multiplier factor for determining  · If a check mark is placed in the ENTRY NOT EVALUATED
+the points earned. (Example: an "adequate" score of 7 for an X1 criterion =        box, the entry is not to be judged.
+7 points; an "adequate" score of 7 for an X2 criterion = 14 points.) A score of
+zero (0) is acceptable if the minimal performance for any criterion is not met.        Game is playable
+                                                                                       PDF of the documentation portfolio is submitted
+                                                                                       ENTRY NOT EVALUATED
+
+PRELIMINARY GAME DESIGN (70 points)                                                                                                            Record scores
+                                                                                                                                            in the column
+CRITERIA           Minimal performance                           Adequate performance                 Exemplary performance               spaces below.
+                          1-4 points
+                                                                          5-8 points                          9-10 points
+Creativity and     Game lacks creativity; poor
+Artisanship        artisanship and development are        Game exhibits adequate creativity    Game is highly creative and well-
+(X2)               evident.                               and artisanship.                     crafted.
+
+Technical Skill    Game lacks originality and shows       Game is original and shows some      Game is original, highly artistic, and
+(X2)               few technical skills.                  evidence of programming skills.      shows evidence of programming
+                                                                                               skills.
+Storyline/Flow of  Game follows little or no story line;  Game follows a story line and flows
+the Game           there is limited logical flow to the   adequately from one (1) scene/level  Game is well-organized and flows
+(X1)               game.                                  to another.                          smoothly from one (1) scene/level to
+                                                                                               the next.
+Overall Appeal     Playing the game is not enjoyable;
+(X2)               interacting in game play is a          Game is somewhat interesting, easy,  Game is innovative and entertaining;
+                   struggle, due to the game's illogical  and enjoyable to play; most design   design principles are incorporated,
+                   sequencing.                            concepts are incorporated.           which make playing the game easy
+                                                                                               and enjoyable.
+
+                                                                                 PRELIMINARY GAME DESIGN SUBTOTAL (70 points)
+
+TIME DEDUCTIONS
+
+Five (5) points will be incurred for a game that completes under the three (3) minute time limit. Enter a five (5) if the game completes
+under the three (3) minute time limit.
+
+376  Technology Student Association (TSA) High School Competitive Events Guide for the 2027 and 2028 National TSA Conferences
+                                                                                             VIDEO GAME DESIGN
+
+PRELIMINARY VIDEO DEMONSTRATION & DOCUMENTATION PORTFOLIO (50 points)                                                                            Record scores
+                                                                                                                                              in the column
+CRITERIA          Minimal performance                  Adequate performance                  Exemplary performance                          spaces below.
+                         1-4 points                            5-8 points                            9-10 points
+
+Video Game        Not all video demonstration          Most of video demonstration           Outstanding skills are evident in the
+Demonstration     components are included and/or       components are included and           presentation of the organization
+(X1)              video is unorganized.                organized.                            and demonstration of the video
+                                                                                             demonstration, which includes all
+                                                                                             required components.
+
+Portfolio         Portfolio is unorganized             Portfolio has most components and     All components are included in the
+Components        and/or is missing three (3) or more  is generally organized per the order  portfolio; content and organization
+(X1)              components.                          of the event guide listing; it has    per the order of the event guide
+                                                       sufficient content.                   listing are excellent.
+
+Game Directions   Game explanation is difficult to     Game directions can be followed,      Game explanation is easy to follow,
+and Control       follow; functions provided are       but at times they do not sync with    and control functions are well-
+Function          illogical or incorrect.              overall workings of the game; most    matched for the game.
+(X1)                                                   control functions are adequate.
+
+Storyboard        Storyboard is sloppy, disorganized,  Storyboard is generally organized     Storyboard is complete, concise,
+(X1)              and incomplete and/or does not       and includes aspects and overall      neat, and follows the overall flow of
+                  follow overall flow of the game      scenes of the game.                   the game.
+                  design.
+
+Resources and AI  Form is incomplete or vague and      Form is complete and clearly          Form is complete, concise, and
+Reflection        does not clearly explain whether     explains AI use or the lack thereof   specific, critically evaluating how AI
+(X1)              or how AI was used, showing little   with connections to the submission    or non-AI tools shaped decisions
+                  connection to the submission or      or theme/topic (when applicable),     and outcomes, with strong
+                  understanding of effectiveness and   addressing effectiveness and ethical  alignment to the submission or
+                  ethics.                              considerations with adequate          theme/topic (when applicable) and
+                                                       analysis.                             ethical reasoning.
+
+                  PRELIMINARY VIDEO DEMONSTRATION & DOCUMENTATION PORTFOLIO SUBTOTAL (50 points)
+
+Rules violations (a deduction of 20% of the total possible points for the above sections) must be initialed by the judge, coordinator, and
+manager of the event. Record the deduction in the space to the right.
+
+Indicate the rule violated: ______________
+
+TIME DEDUCTIONS
+
+Five (5) points total will be incurred for a game demonstration video that goes over the five (5) minute time maximum. Enter a five (5) if
+the game demonstration video is over five (5) minutes.
+
+                                                                                    PRELIMINARY SUBTOTAL (120 points)
+
+Technology Student Association (TSA) High School Competitive Events Guide for the 2027 and 2028 National TSA Conferences                    377
+VIDEO GAME DESIGN
+
+SEMIFINAL PRESENTATION AND INTERVIEW (60 points)                                                                                                   Record scores
+                                                                                                                                                in the column
+CRITERIA              Minimal performance                     Adequate performance                          Exemplary performance             spaces below.
+                             1-4 points                               5-8 points
+                                                                                                                    9-10 points
+Presentation          Presentation may be missing key         Presentation provides a basic
+(X2)                  elements to provide a proper            overview of the game and the           Presentation is engaging and
+                      overview of the game, design            process of developing the game;        provides an overview of the
+                      process, technology choices, etc.;      presentation is organized and          game and discuss topics such
+                      presenters may appear nervous,          structured, the presenters are         as inspiration, design process,
+                      poor posture, poor eye contact or       generally knowledgeable and            technology choices, etc.; presenters
+                      lack confidence; presentation may       confident when presenting their        are confident, knowledgeable and
+                      not follow a logical structure, or the  content.                               comfortable with their presentation
+                      presenters may not appear familiar                                             material, and it's presented in a clear
+                      with the content.                                                              and logical structure.
+
+Organization          Participants seem unorganized and       Participants are generally prepared    Interview is logical, well-organized,
+(X1)                  unprepared for the interview; an        for the interview; explanation of      and easy to follow; game
+                      illogical explanation of the game is    the game is communicated and           explanation is communicated in an
+                      presented.                              generally organized.                   organized and concise manner.
+
+Team Participation    Majority of the delivery is made        Team members generally are             All team members are actively
+(X1)                  by one (1) member of the team;          engaged in the interview, though       involved in the interview and
+                      partner(s) may be disengaged in the     one (1) member may take on more        responses to the questions; there is
+                      interview.                              responsibility that the other(s).      shared responsibility among team
+                                                                                                     members.
+Knowledge             Participants seem to have little        Participants exhibit an
+(X1)                  understanding of the concepts in        understanding of the concepts in       Participants show clear evidence of
+                      their project; answers to questions     the project.                           a thorough understanding of their
+Articulation          may be vague.                                                                  project.
+(X1)
+                      Communication of the design             Communication of the design            Communication of the design
+                      process is unclear, unorganized, and    process is somewhat logical and        process is clear, concise, and
+                      or illogical; leadership and/or 21st    clear; leadership and/or 21st century  logical; leadership and/or 21st
+                      century skills are not evident.         skills are somewhat evident.           century skills are clearly evident.
+
+                                                           SEMIFINAL PRESENTATION AND INTERVIEW SUBTOTAL (60 points)
+
+Rules violations (a deduction of 20% of the total possible points for the above sections) must be initialed by the judge, coordinator, and
+manager of the event. Record the deduction in the space to the right.
+
+Indicate the rule violated: ______________
+
+BONUS (10 points)                                                                                                                                  Record scores
+                                                                                                                                                in the column
+CRITERIA              Minimal performance                            Adequate performance                   Exemplary performance             spaces below.
+                             1-4 points                                                                             9-10 points
+                                                                              5-8 points
+Bonus Points          Game demonstrates some unique                                                  Game is outstanding and unique.
+Unique and            and exceptional features and/or         Game is very good but limited in
+exceptional features  exemplary educational value.            uniqueness.
+
+(X1)
+
+To arrive at the TOTAL score, add any subtotals and subtract rules violation points, as necessary. TOTAL (180 points)
+
+378  Technology Student Association (TSA) High School Competitive Events Guide for the 2027 and 2028 National TSA Conferences
+           VIDEO GAME DESIGN
+
+Comments:
+
+I certify these results to be true and accurate to the best of my knowledge.
+JUDGE
+Printed name:________________________________________ Signature:______________________________________________
+
+Technology Student Association (TSA) High School Competitive Events Guide for the 2027 and 2028 National TSA Conferences  379
+VIDEO GAME DESIGN
+
+VIDEO GAME DESIGN
+EVENT COORDINATOR INSTRUCTIONS
+
+PERSONNEL                                                       AT THE CONFERENCE
+                                                                A. Attend the mandatory coordinator's meeting at the
+A. Event coordinator
+B. Judges:                                                          designated time and location.
+                                                                B. Report to the CRC room and check the contents of
+    1. Preliminary round, two (2) or more
+    2. Semifinal Round, two (2) or more (preferably the             the coordinator's packet.
+                                                                C. Review the event guidelines and check to see that
+        same judges from the preliminary round)
+                                                                    enough personnel have been scheduled.
+MATERIALS                                                       D. Inspect the area or room in which the event is to
+
+A. Coordinator's packet, containing:                                be held for appropriate set-up, including room size,
+    1. Event guidelines, one (1) copy for the coordinator           chairs, tables, outlets, etc. Notify the event manager of
+        and for each judge                                          any potential problems.
+    2. TSA Event Coordinator Report                             E. Ensure the judges have access to the online judging
+                                                                    system.
+B. Stopwatch
+C. Interview questions                                          PRELIMINARY ROUND
+D. Tables for entries                                           A. On the first full day of competition, post a list of the
+E. One (1) extension cord for the semifinalist evaluation team
+F. One (1) power bar with surge protection for                      twelve (12) semifinalists in random order.
+
+    semifinalists, as needed                                    SEMIFINAL ROUND
+G. Laptop computer with high speed Internet capability          A. At least one (1) hour before the event is scheduled
+H. Tables and chairs for event coordinator, semifinalist
+                                                                    to begin, meet with judges, and review time limits,
+    judges, and participants                                        procedures, regulations, evaluation, and all other
+                                                                    details related to the event.
+RESPONSIBILITIES                                                B. Determine the procedure for breaking ties before the
+PRE-CONFERENCE                                                      on-site competition begins.
+                                                                C. No more than two (2) semifinalist representatives
+A. National TSA will collect entries until 11:59pm ET               report at the time and place stated in the conference
+    on a designated date in mid-May. The results are                program to sign up and participate in the
+    shared with the CRC manager, event coordinator, and             on-site presentation and interview.
+    assigned judges.                                            D. Distribute the guidelines for the interview.
+                                                                E. Manage completion of the on-site interviews.
+B. Review entries as they are submitted to the                  F. Decisions about rules violations must be discussed
+    designated online storage utility.                              and verified with the judges, event coordinator, and
+                                                                    CRC manager to determine either:
+C. Manage communication and Pre-conference                          1. To deduct twenty percent (20%) of the total
+    evaluation (at least two [2] or more judges should be
+    recruited earlier in the year). Coordinate with National            possible points in this round or
+    TSA and/or the Judge Manager.                                   2. To disqualify the entry
+                                                                    The event coordinator, judges, and CRC manager
+D. Confirm with judges that video games are not                     must initial either of these actions on the rating form.
+    playable by using different devices and/or browsers.
+                                                                G. If necessary, manage security and the removal of
+                                                                    materials from the event area.
+
+380  Technology Student Association (TSA) High School Competitive Events Guide for the 2027 and 2028 National TSA Conferences
+

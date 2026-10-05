@@ -1,0 +1,49 @@
+basic idea
+Spaceship, 3 unique planets
+
+ROLES:
+
+Avaneesh: Main Coder
+Retesh: Debugger, Main Guy
+Angad: Designer
+Niko: Designer
+Nihaan: Documentation, Side Designer
+Arjun: Documentation
+
+Task:
+Designer make a main menu screen, and coder code the
+main menu screen.
+
+Idea 1
+You wake up from cryo sleep after you crash onto the island of Exxon and you are 142 million light years
+away from earth and 12 million light years away from your destination. You need to get resources from
+each planet near you so you can repair the rocket and your cryosleep pod.
+Start
+(DO NOT DELETE WITHOUT PERMISSION) You may also add revisions of ideas or endings
+Revision of idea 1
+You go to each planet to get resources with your AI assistant, Cyu, but the resources you need are
+guarded by bosses that force you to do puzzles to get the materials you need. While traveling to different
+planets the player will encounter asteroids which they need to dodge.(we could maybe add repairs but
+that would be too much)
+Ending to revision 1
+Your ai assistant turns out to be evil and you find out that the resources you needed made the planet's
+people helpless as they needed those resources to live. (This idea is extreme but plot twist is recommend
+at least of some sort)
+
+Claudey
+main menu
+Stealth World
+Stealth World
+    - Sneak around monsters as you reach an area
+    - Planet full of predators with heightened senses
+    -
+world 2
+The world of regrets;
+    1) The player enters this world to gather fuel. The boss (Moria) separates his soul from his
+         body, forcing the player to solve puzzles to retrieve his soul and gain fuel. (NOT A
+         FIGHT)
+         Mechanics like a m
+world 3
+spaceship
+This is the main base you wake up in here after your ship crashes you wake
+

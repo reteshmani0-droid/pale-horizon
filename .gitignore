@@ -1,0 +1,18 @@
+# Tooling metadata
+.freebuff/
+
+# Python cache (art/tools scripts)
+__pycache__/
+*.py[cod]
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
+
+# Logs
+*.log

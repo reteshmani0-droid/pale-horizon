@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pale Horizon</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="frame">
+  <canvas id="screen" width="640" height="368"></canvas>
+  <div id="scanlines"></div>
+
+  <!-- in-game HUD -->
+  <div id="hud" class="layer hidden">
+    <div class="hud-left">
+      <span id="hud-suit" class="suit"><span class="dot"></span><span id="hud-suit-text">EVA SEALED</span></span>
+      <span class="chip"><img src="assets/ui_fuel.png" alt="fuel"> <b id="hud-fuel">0</b><small>/9</small></span>
+      <span class="chip material" id="hud-hull"><img src="assets/ui_plate.png" alt="hull"> <b>0</b><small>/3</small></span>
+      <span class="chip material" id="hud-cryo"><img src="assets/ui_coolant.png" alt="coolant"> <b>0</b><small>/3</small></span>
+      <span class="chip material" id="hud-bio"><img src="assets/ui_ration.png" alt="rations"> <b>0</b><small>/3</small></span>
+      <span id="hud-diff" class="chip diff"></span>
+    </div>
+    <div class="hud-right">
+      <span id="hud-objective"></span>
+      <span id="hud-alert" class="alert">ALERT</span>
+      <span id="hud-hint" class="hint">Tab: pause &nbsp; J: journal &nbsp; M: mute</span>
+    </div>
+  </div>
+
+  <!-- overlays -->
+  <div id="menu" class="layer menu hidden">
+    <div class="menu-grid">
+      <div class="menu-main">
+        <p class="kicker">TSA Video Game Design entry &middot; E for Everyone</p>
+        <div class="logo">
+          <h1>Pale Horizon</h1>
+          <h2>The Long Way Home</h2>
+        </div>
+        <p class="tagline"></p>
+        <div class="menu-buttons"></div>
+      </div>
+      <aside class="menu-log">
+        <h3>Lander status</h3>
+        <ul id="menu-status"></ul>
+        <h3>Controls</h3>
+        <ul id="menu-controls">
+          <li><span>move</span><b>&larr; &rarr; / A D</b></li>
+          <li><span>jump</span><b>SPACE</b></li>
+          <li><span>sneak</span><b>&darr; / S</b></li>
+          <li><span>use</span><b>E</b></li>
+          <li><span>pause</span><b>TAB</b></li>
+          <li><span>map</span><b>TAB &rsaquo; chart</b></li>
+        </ul>
+        <p class="footnote">Pixel art, code and sound generated and then tuned by the team.
+        No weapons exist in this game: you sneak, solve and survive.</p>
+      </aside>
+    </div>
+  </div>
+
+  <div id="panel" class="layer panel hidden">
+    <div class="panel-inner">
+      <h3 id="panel-title"></h3>
+      <div id="panel-body"></div>
+      <div id="panel-actions" class="actions"></div>
+    </div>
+  </div>
+
+  <!-- field processors: purify / smelt / melt -->
+  <div id="minigame" class="layer minigame hidden">
+    <div class="rig">
+      <h3 id="mg-title"></h3>
+      <p class="brief" id="mg-brief"></p>
+      <canvas id="mg-canvas" width="398" height="150"></canvas>
+      <div class="readout"><span id="mg-left"></span><span id="mg-right"></span></div>
+      <div class="acts">
+        <button id="mg-abort" class="danger">Abort</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="dialogue" class="layer dialogue hidden">
+    <div class="speaker">
+      <div class="portrait"><canvas id="portrait" width="32" height="32"></canvas></div>
+      <span id="speaker-name">PILOT</span>
+    </div>
+    <div class="bubble"><p id="dialogue-text"></p><span class="advance">[ space / click ]</span></div>
+  </div>
+
+  <div id="toast" class="layer toast hidden"><span id="toast-text"></span></div>
+  <div id="flash" class="layer flash"></div>
+  <div id="caught" class="layer hidden">
+    <h2>CAUGHT</h2>
+    <p id="caught-line">RESTARTING THE DESCENT</p>
+  </div>
+
+  <!-- touch controls for tablets -->
+  <div id="touch" class="layer touch hidden">
+    <div class="dpad">
+      <button data-key="left">&larr;</button>
+      <button data-key="right">&rarr;</button>
+    </div>
+    <div class="acts">
+      <button data-key="down">&darr;<small>sneak</small></button>
+      <button data-key="dash">DASH<small>q</small></button>
+      <button data-key="freeze">CRYO<small>f</small></button>
+      <button data-key="jump">JUMP</button>
+      <button data-key="use">USE</button>
+    </div>
+    <div class="touch-tools"><button data-key="journal">LOG</button><button data-key="pause">PAUSE</button></div>
+  </div>
+
+  <div id="debug" class="layer debug hidden"><pre id="debug-text"></pre></div>
+  <div id="admin" class="layer hidden">
+    <div class="console">
+      <h3>Test deck</h3>
+      <p class="brief">Hidden developer deck. ESC or Close exits. Changes write straight to the active save slot.</p>
+      <div id="admin-body"></div>
+      <pre class="state" id="admin-state"></pre>
+      <div class="slot-tools">
+        <button id="admin-close">Close the test deck</button>
+        <button id="admin-reset" class="danger">Wipe this save slot</button>
+      </div>
+    </div>
+  </div>
+  <!-- the code reader: hidden in the corner until you go looking for it -->
+  <div id="codes" class="codes">
+    <button id="codes-chip" class="codes-chip" type="button" aria-label="code reader" aria-expanded="false" aria-controls="codes-input">&#9632; code</button>
+    <div class="codes-box">
+      <label for="codes-input">Code</label>
+      <input id="codes-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="24" placeholder="type a code">
+      <span class="codes-typed" id="codes-typed">&mdash;</span>
+      <button id="codes-close" type="button">close</button>
+    </div>
+  </div>
+
+  <div id="selftest" class="selftest"></div>
+  <div id="loading" class="layer loading"><p>loading pixel cargo&hellip;</p></div>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
