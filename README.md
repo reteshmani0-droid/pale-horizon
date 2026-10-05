@@ -41,8 +41,23 @@ Opening `game/index.html` straight from the file system will **not** work, becau
 The whole game is static files in `game/` — drop that folder on any static host and the URL is your entry:
 
 - **GitHub Pages**: push the repo, set Pages to serve the branch root, and link `…/game/`.
-- **Netlify Drop / Cloudflare Pages / Vercel**: drag the `game` folder onto the dashboard.
+- **Netlify Drop / Cloudflare Pages**: drag the `game` folder onto the dashboard.
 - **itch.io**: upload `game/` as an HTML game with `index.html` as the entry point.
+
+### Vercel (the repo is already configured)
+
+`vercel.json` sets `"outputDirectory": "game"`, so Vercel serves `game/` at the site root with no build step.
+
+1. Push this repo to GitHub.
+2. On <https://vercel.com>, sign in with GitHub and choose **Add New → Project → Import** the repo.
+3. Framework Preset: **Other**. Build Command: leave empty (turn the Override on and clear it).
+   Output Directory: `game` (already read from `vercel.json`). No environment variables are needed.
+4. **Deploy.** The site gets a URL like `https://pale-horizon.vercel.app`.
+
+**How updates work:** the live site only changes when a commit is **pushed** to the production branch
+(`main`). Editing files locally — including edits made by an AI assistant — does **not** redeploy;
+`git push` does, automatically, in about a minute. Pushes to other branches get their own preview
+URLs. To deploy the local folder without Git, run `npx vercel --prod` from the project root instead.
 
 ## Controls
 
