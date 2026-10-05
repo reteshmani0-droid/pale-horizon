@@ -1037,7 +1037,7 @@ export class EndingScene {
     this.game = game;
     this.choice = choice;
     this.t = 0;
-    this.creditsShown = false;
+    this.logShown = false;
     stopMusic();
     stopAmbience();
     showHud(false);
@@ -1060,31 +1060,26 @@ export class EndingScene {
 
   update(dt) {
     this.t += dt;
-    if (this.creditsShown) return;
+    if (this.logShown) return;
     if (input.pressed("use") || this.t > 12) {
-      this.creditsShown = true;
-      this.showCredits();
+      this.logShown = true;
+      this.showFlightLog();
     }
   }
 
-  showCredits() {
+  /** The card that closes a run: what the flight log says, nothing else. */
+  showFlightLog() {
     const s = this.game.save;
     const minutes = Math.floor((s.timePlayed || 0) / 60);
-    showPanel("PALE HORIZON", `
-      <p><b>Thank you for playing.</b></p>
-      <p>Fuel recovered: <b>${Math.min(9, totalFuel(s))}/9</b> &middot; ship systems restored: <b>${totalSystems(s)}/9</b>
-      &middot; times downed: <b>${s.downs}</b> &middot; play time: <b>${minutes} min</b> &middot; difficulty: <b>${difficultyOf(s.difficulty).name}</b></p>
-      <p>Ending seen: <b>${s.ending === "return" ? "Homecoming Deferred" : "The Long Way Home"}</b></p>
-      <p style="margin-top:12px"><b>Team</b><br>
-      Avaneesh - main coder &middot; Retesh - debugger / main guy &middot; Angad - designer &middot; Niko - designer<br>
-      Nihaan - documentation / side designer &middot; Arjun - documentation</p>
-      <p><b>Design revision note</b>: planet "Exxon" was renamed <b>Exxos</b> to avoid a trademark clash,
-      and World 3 (left blank in the design doc) was filled in as <b>The Hollow Signal</b>.</p>
-      <p>Pixel art, code, levels and sound were generated with AI assistance, then reviewed and tuned by the team.
-      GenAI use is permitted for TSA Video Game Design - see the AI reflection page in the documentation portfolio.</p>`,
+    showPanel("FLIGHT LOG", `
+      <p><b>${s.ending === "return" ? "Homecoming Deferred" : "The Long Way Home"}</b></p>
+      <p>Fuel recovered: <b>${Math.min(9, totalFuel(s))}/9</b> &middot; systems restored: <b>${totalSystems(s)}/9</b>
+      &middot; signals recovered: <b>${(s.journal || []).length}</b> &middot; times downed: <b>${s.downs}</b>
+      &middot; play time: <b>${minutes} min</b> &middot; difficulty: <b>${difficultyOf(s.difficulty).name}</b></p>
+      <p>The wreck is still on Exxos, and the three worlds are still out there.</p>`,
       [
-        { label: "Play again", primary: true, onClick: () => { hidePanel(); this.game.toMenu(); } },
-        { label: "Chapter select", onClick: () => { hidePanel(); this.game.showChapters(); } },
+        { label: "Fly again", primary: true, onClick: () => { hidePanel(); this.game.toMenu(); } },
+        { label: "Chapter select", sub: "any world, any time", onClick: () => { hidePanel(); this.game.showChapters(); } },
       ]);
   }
 

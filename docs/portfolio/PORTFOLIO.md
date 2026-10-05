@@ -192,8 +192,9 @@ music or sound, the signed permission letter must be inserted here.
 
 ### Ethical reasoning
 
-- **Disclosure first.** The Credits screen inside the game states that AI was used for art, code, levels
-  and sound, so any judge or player sees it without opening documentation.
+- **Disclosure in the project, not the game.** Stating AI use inside the title screen misread as portfolio
+  copy, so the game ships as a game: the disclosure lives here, in the README and in the design mapping,
+  where a judge reading the submission will find it alongside every other note.
 - **Reviews, not replacements.** AI was used where it could be checked: generated art is inspected in a
   contact sheet, generated code is played, generated story is chosen by the team. The final creative
   decisions — the setting, the stealth world, Moria, the twist ending — came from the team's document.

@@ -180,3 +180,13 @@ Every pixel is generated code — edit the palette or shapes and re-run:
 python3 art/generate_assets.py      # writes game/assets/*.png
 python3 art/generate_storyboard.py  # writes docs/portfolio/storyboard.png
 ```
+
+## Team and tools
+
+A TSA Video Game Design entry, rated **E for Everyone**. Team roles: **Avaneesh** (main coder),
+**Retesh** (debugger), **Angad** and **Niko** (design), **Nihaan** (documentation / side design),
+**Arjun** (documentation).
+
+The game ships without a credits screen, so the team list lives here. Pixel art, code, levels and sound
+were produced with AI assistance and then reviewed, played and tuned by the team — the reasoning behind
+that split is written up in the [portfolio](docs/portfolio/PORTFOLIO.md).

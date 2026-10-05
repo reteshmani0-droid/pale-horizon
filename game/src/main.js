@@ -310,39 +310,36 @@ class Game {
     const fresh = !s.started;
     showMenu(
       [
-        { hint: "\u2191 \u2193 to move \u00b7 ENTER to choose \u00b7 clicking works too" },
+        { hint: "\u2191 \u2193 select \u00b7 ENTER confirm" },
         { group: "Flight" },
         {
           label: fresh ? "Start game" : "Continue game",
-          sub: fresh
-            ? "the crash, the cryo bay, and your first look at the navigation console"
-            : `slot ${this.slot + 1} - ${summarize(s).label}`,
+          sub: fresh ? `slot ${this.slot + 1} \u00b7 no log yet` : `slot ${this.slot + 1} \u00b7 ${summarize(s).label}`,
           primary: true,
           onClick: () => (fresh ? this.startIntro() : this.toHub()),
         },
-        { label: "Save slots", sub: `three flights kept side by side \u00b7 slot ${this.slot + 1} is in play`, onClick: () => this.showSlots(() => this.toMenu()) },
-
-        { label: "How to play", sub: "what the ship still needs, the keys, and the stealth rules", onClick: () => this.showHowTo() },
-        { label: "Training deck", sub: "a short practice room: running, jumping, puzzles, the field processor", onClick: () => this.startTutorial() },
-
-        { label: "Difficulty & options", sub: `now playing: ${diff.name} \u00b7 volume \u00b7 pilot shell`, onClick: () => this.showOptions() },
-        { label: "Field journal", sub: `${(s.journal || []).length}/${TRANSMISSIONS.length} signals recovered · inventory & field guide`, onClick: () => this.showJournal(() => this.toMenu()) },
-
-        { label: "Credits & AI note", sub: "who built it, and what the AI did", onClick: () => this.showCredits() },
+        { label: "Save slots", sub: `${SLOT_COUNT} logs kept aboard \u00b7 slot ${this.slot + 1} in play`, onClick: () => this.showSlots(() => this.toMenu()) },
+        { group: "Reference" },
+        { label: "How to play", sub: "keys, stealth, what the lander still needs", onClick: () => this.showHowTo() },
+        { label: "Field journal", sub: `${(s.journal || []).length} / ${TRANSMISSIONS.length} signals recovered`, onClick: () => this.showJournal(() => this.toMenu()) },
+        { label: "Training deck", sub: "practice room off the cryo bay", onClick: () => this.startTutorial() },
+        { group: "System" },
+        { label: "Options", sub: `${diff.name} \u00b7 volume \u00b7 pilot shell`, onClick: () => this.showOptions() },
       ],
       {
-        tagline: `Stranded 142,000,000 light-years from Earth.<br>
-        Scavenge three worlds for fuel, repair the lander, and get home.<br>
-        <b>Nothing here can be fought.</b> If something catches you, the descent restarts.`,
+        tagline: `Down on Exxos with dry tanks.<br>
+        Three worlds inside pod range. One way home.`,
         status: [
           ["Save slot", `${this.slot + 1} / ${SLOT_COUNT}`, ""],
           ["Fuel tanks", `${fuel} / 9`, fuel >= 9 ? "ok" : "off"],
           ["Hull plating", `${systems.hull} / 3`, systems.hull >= 3 ? "ok" : "off"],
           ["Cryo loop", `${systems.cryo} / 3`, systems.cryo >= 3 ? "ok" : "off"],
           ["Bio reactor", `${systems.bio} / 3`, systems.bio >= 3 ? "ok" : "off"],
+          ["Signals", `${(s.journal || []).length} / ${TRANSMISSIONS.length}`, ""],
           ["Difficulty", diff.name, ""],
           ["Salvage", `${salvage}`, ""],
           ["Catches", `${s.catches}`, ""],
+          ["Rated", "E \u00b7 Everyone", ""],
         ],
       }
     );
@@ -511,11 +508,11 @@ class Game {
     });
     rows.push({ label: "Back", onClick: () => this.toMenu() });
     showPanel("CHAPTER SELECT", `
-      <p>Every world is playable right away so reviewers and judges can reach the third level
-      without replaying earlier missions. The intended order is Exxos, then the World of Regrets,
-      then the Hollow Signal - each one ends with a flight home to the lander.</p>
-      <p>Choosing a world plays its travel cutscene. Difficulty is set in <b>Difficulty &amp; options</b>
-      and applies the next time a world loads.</p>`,
+      <p>The pod can be flown to any world already in range, whatever the log says. The intended
+      order is Exxos, then the World of Regrets, then the Hollow Signal - each one ends with a
+      flight home to the lander.</p>
+      <p>Flying to a world plays its travel leg. Difficulty is set in <b>Options</b> and applies
+      the next time a world loads.</p>`,
       rows);
     hideMenu();
   }
@@ -578,26 +575,7 @@ class Game {
       A depleted shield restarts that crossing without costing your materials.</p>
       <p><b>Difficulty.</b> Explorer is gentle (slower hunters, narrow cones, water is harmless).
       Standard is the intended game. Nightmare sends fast hunters with wide cones across the ice.</p>`,
-      [{ label: "Close", primary: true, onClick: () => this.toMenu() }, { label: 'Chapter select', sub: 'worlds for judges and reviewers', onClick: () => this.showChapters() }]);
-    hideMenu();
-  }
-
-  showCredits() {
-    showPanel("CREDITS", `
-      <p><b>Pale Horizon</b><br>A TSA Video Game Design entry &middot; E for Everyone</p>
-      <p><b>Team roles</b><br>
-      Avaneesh - main coder &middot; Retesh - debugger / main guy &middot; Angad - designer &middot; Niko - designer<br>
-      Nihaan - documentation / side designer &middot; Arjun - documentation</p>      <p><b>Concept</b> taken from the team's design document: the crashed ship, the stealth world of predators,
-      and Moria of the World of Regrets who splits his soul from his body
-      (a puzzle, never a fight).</p>
-      <p><b>Filled-in gaps</b>: planet "Exxon" renamed <b>Exxos</b> (trademark-safe); World 3, blank in the
-      document, became <b>The Hollow Signal</b>; the asteroid idea became required passages on the Regrets and glacier routes; and the
-      document's "AI turns out to be evil" twist became the ending choice - told through the ship's logs
-      rather than a companion character.</p>
-      <p><b>Technology</b>: custom HTML5 canvas engine (no download, any modern browser), pixel art generated
-      with Python + Pillow, and all music, ambience and effects synthesised at runtime with WebAudio.
-      AI assistance was used for code, art and text, and is reflected on in the documentation portfolio.</p>`,
-      [{ label: "Close", primary: true, onClick: () => this.toMenu() }]);
+      [{ label: "Close", primary: true, onClick: () => this.toMenu() }, { label: "Chapter select", sub: "any world, any time", onClick: () => this.showChapters() }]);
     hideMenu();
   }
 

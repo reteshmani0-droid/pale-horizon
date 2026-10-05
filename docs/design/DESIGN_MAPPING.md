@@ -17,13 +17,13 @@ Sources (text extracted to `docs/design/ideas.txt` and `docs/design/hs_assignmen
 | "the resources you need are guarded by bosses that force you to do puzzles to get the materials" | Moria (World of Regrets) and the relay puzzle on World 3 guard the fuel; nothing is beaten by force |
 | "the player will encounter asteroids which they need to dodge" | **Route crossings** — mandatory playable asteroid passages on outbound and return trips to Regrets and the glacier, with shield checkpoints; no bonus fuel |
 | "Your AI assistant turns out to be evil … resources … made the planet's people helpless" | The ending: Cyu confesses it knew, and the player chooses to give the fuel back or keep it |
-| "Designer make a main menu screen, and coder code the main menu screen" | Main menu with title art, tagline, live progress readout, Start/Continue, Chapter select, How to play, Credits |
+| "Designer make a main menu screen, and coder code the main menu screen" | Main menu with title art, an in-fiction tagline, a live lander read-out column, Start/Continue, Save slots, How to play, Field journal, Training deck and Options |
 | Stealth World: "Sneak around monsters as you reach an area", "Planet full of predators with heightened senses" | Mission 1 **Exxos** (see the name note below): 6 predators with vision cones + hearing, 1 patrol drone, tall-grass hiding, sneak mechanic, beacons |
 | World 2 "The world of regrets" — "Moria separates his soul from his body, forcing the player to solve puzzles to retrieve his soul and gain fuel. **(NOT A FIGHT)**" | Mission 2: three rune-block/pressure-plate puzzles open three seals, the soul orb must be **carried** (not fought) to Moria's body, and only then does the fuel become collectable |
 | "Mechanics like a m…" (sentence cut off in the document) | Filled in as push-blocks, pressure plates, a sealed door per puzzle, checkpoint beacons and moving through ruins |
 | "world 3" (otherwise blank) | **Filled in: The Hollow Signal** — a storm world whose power died with its people. Ember charges + relays raise bridges, wind gusts shove the player, searchlight drones patrol. See section C |
 | "spaceship — This is the main base you wake up in here after your ship crashes" | The Cryo Bay hub: crashed ship sprite, cryo pod, nav console and repair bay stations |
-| Roles listed (Avaneesh, Retesh, Angad, Niko, Nihaan, Arjun) | Kept intact in the in-game Credits and in the portfolio title page |
+| Roles listed (Avaneesh, Retesh, Angad, Niko, Nihaan, Arjun) | Kept intact in the portfolio title page and the repository README; the game itself carries no credits screen |
 | "You may also add revisions of ideas or endings" | Two endings written (**Homecoming Deferred** / **The Long Way Home**) |
 | (nothing in the documents about difficulty, audio or accessibility) | Added by me, because a competition game is played by judges of very different skill: **three difficulty tiers**, a **four-bus audio mixer with procedural music/ambience**, remappable-feeling keyboard + **touch controls**, and a **self-test harness** that drives actual mechanics and authored puzzle solutions after changes |
 
@@ -31,7 +31,7 @@ Sources (text extracted to `docs/design/ideas.txt` and `docs/design/hs_assignmen
 
 The document calls the crash world **"Exxon"**. That is also the name of a real, trademarked corporation,
 which is a copyright/trademark risk for a competition entry, so the planet is **Exxos** in the game and in
-all documentation. The credits screen states this revision openly.
+all documentation, and stated openly in the portfolio and the repository README.
 
 ### About the "highlighted" text
 

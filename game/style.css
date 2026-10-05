@@ -770,6 +770,10 @@ button.cursor:not(:disabled), button:focus-visible { border-color: var(--lamp); 
   .menu-log { display: none; }
   .menu { justify-content: center; padding: 24px; }
   .logo h1 { font-size: 48px; }
+  /* A phone in portrait is far taller than the canvas is wide: cropping to fill
+     would leave the middle third of the title composition. Letterbox instead so
+     the whole wreck, planet and title card stay on screen. */
+  .title-screen #screen { height: 100vh !important; min-height: 0 !important; object-fit: contain; }
 }
 
 .loading {
