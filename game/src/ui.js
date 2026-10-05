@@ -253,9 +253,14 @@ export function drawPortrait(name) {
   g.clearRect(0, 0, c.width, c.height);
   g.fillStyle = "#151A21";
   g.fillRect(0, 0, c.width, c.height);
-  // MORIA shows his face, the pilot shows the suit; anything else speaking is
-  // the ship's bird that follows the pilot between worlds
-  const key = name === "MORIA" ? "spr_moria" : name === "ASTRONAUT" ? "p_idle0" : "b_fly1";
+  // Who is talking decides the face: Moria his own, the pilot the suit, a sign or
+  // a console the thing you read, and the ship's briefings a comms pulse. Nothing
+  // in the world is used here - the creatures are not characters.
+  const key = name === "MORIA" ? "spr_moria"
+    : name === "ASTRONAUT" ? "p_idle0"
+      : /^SIGN/.test(name || "") ? "spr_terminal"
+        : /^LOG/.test(name || "") ? "p_idle0"
+          : "spr_transmission";
   const src = IMG[key] || IMG.p_idle0;
   if (!src) return;
   const scale = Math.max(1, Math.floor(Math.min(c.width / src.width, c.height / src.height)));

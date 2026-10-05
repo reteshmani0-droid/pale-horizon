@@ -303,6 +303,61 @@ export async function runSelfTest(api) {
     return { ok, note: lines.join(" | ") || "no creeper in m1 / no bird in m3" };
   });
 
+  check("stealth: the ground wedge a creeper shows is the ground it feels", () => {
+    const S = start("m1", 25);
+    g.godMode = true;                 // measuring, not playing
+    const foe = S.enemies.find((e) => e.constructor.name === "Creeper");
+    if (!foe) return { ok: false, note: "no creeper in m1" };
+    const foot = foe.y + foe.h;
+    const walk = 34;                  // inside a standing reach of 132*0.55
+    S.player.hidden = false;          // standing in a tuft is a separate rule
+    const at = (dx, dy) => {
+      put(S, foe.x + foe.dir * dx, foot + dy - S.player.h);
+      S.player.hidden = false;
+      return foe.canSee(S.player, S);
+    };
+    const inWedge = at(walk, 0);      // on the same ground, in front of the trap
+    const above = at(walk, -46);      // 46px up a bank: the old eye rule saw this
+    const behind = at(-walk, 0);      // behind the trap
+    const far = at(400, 0);           // well outside the reach
+    g.godMode = false;
+    return {
+      ok: inWedge && !above && !behind && !far,
+      note: `in the wedge=${inWedge}; 46px up a bank=${above} (must be false); behind=${behind}; 400px away=${far}`,
+    };
+  });
+
+  check("birds: they reach the ground they patrol, and grass does not hide you", () => {
+    const S = start("m3", 25);
+    g.godMode = true;
+    const bird = S.enemies.find((e) => e.constructor.name === "Bird");
+    if (!bird) return { ok: false, note: "no bird in m3" };
+    if (bird.shadowY === null) return { ok: false, note: "the bird found no ground below it" };
+    const ground = bird.shadowY;
+    const place = (dx, dy, speed, hidden) => {
+      put(S, bird.x + bird.w / 2 + bird.dir * dx - S.player.w / 2, ground + dy - S.player.h);
+      S.player.vx = speed;
+      S.player.speed = Math.abs(speed);
+      S.player.hidden = hidden;
+      return bird.canSee(S.player, S);
+    };
+    const swept = ground - bird.y;                 // how far above the floor it flies
+    const grassUnder = place(30, 0, 3, true);      // running under it, hidden in a tuft
+    const farthest = (speed) => {
+      let best = 0;
+      for (let dx = 4; dx <= 260; dx += 4) if (place(dx, 0, speed, false)) best = dx;
+      return best;
+    };
+    const runReach = farthest(3);
+    const sneakReach = farthest(0.4);
+    const aboveIt = place(30, -(swept + 70), 3, false);
+    g.godMode = false;
+    return {
+      ok: grassUnder && runReach > 30 && sneakReach < runReach && !aboveIt,
+      note: `running under it in grass=${grassUnder}; its swept ground ${runReach}px running vs ${sneakReach}px sneaking; ${Math.round(swept + 70)}px above it=${aboveIt}`,
+    };
+  });
+
   check("catch: the test deck's catch-proof mode lets the same contact pass", () => {
     g.godMode = true;
     const S = start("m1", 20);

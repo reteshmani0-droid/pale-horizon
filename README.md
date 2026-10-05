@@ -95,7 +95,9 @@ Pick a tier in **Difficulty & options**; it applies the next time a world loads.
 - **Creepers** are plants that hunt by feel: a vision cone on the ground, plus hearing. Sneaking halves
   the distance at which they notice you, and standing still inside tall grass makes you invisible.
 - **Birds** fly above the ground cover, so grass will not hide you from them; walls, floors and platforms
-  still break their line of sight. They cast a shadow that tracks the ground below.
+  still break their line of sight. Each one draws the stretch of floor it is sweeping, and a shadow that
+  tracks the ground below, so you can see which ground is watched before you run across it. Sneaking
+  shortens what they can reach.
 - **Getting caught** ends the run instantly. A creeper pulls the pilot under the roots, a bird lifts them
   off their feet, and a small slip goes up while the animation plays — then the level rebuilds itself from
   the last beacon you lit. Nothing banked is lost: a catch costs you the attempt, not the save.
@@ -148,7 +150,7 @@ node tools/test_engine.mjs       # 64 unit checks: physics, tilemap, progression
 node tools/validate_levels.mjs   # approximate reachability and progression-order gate checks
 ```
 
-Open `game/index.html?selftest=1` to run the in-browser self-test — 61 checks that drive the real game
+Open `game/index.html?selftest=1` to run the in-browser self-test — 63 checks that drive the real game
 (movement, catches, processors, installs, saves, intro, six travel legs, extraction,
 actual double-crate/frost/timed puzzle solves, and the starter-kit climb to research) and
 print a report on screen. The tests restore the player's original save slots afterward.

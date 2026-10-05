@@ -487,6 +487,17 @@ export class Enemy {
   }
 }
 
+/**
+ * How far up a bank a creeper's roots still feel a footstep, and how that reach
+ * grows with distance from the trap. Detection and the drawn wedge share these
+ * two functions, so the ground you can see is exactly the ground that catches
+ * you: what a stealth game shows has to be the truth, not a decoration.
+ */
+const CREEPER_REACH = 16;
+function creeperBand(d, reach) {
+  return CREEPER_REACH * Math.min(1, 0.35 + (0.65 * d) / Math.max(1, reach));
+}
+
 export class Creeper extends Enemy {
   constructor(cfg, diff) {
     super(cfg, diff);
@@ -498,6 +509,29 @@ export class Creeper extends Enemy {
     this.baseSpeed = 0.7;
     this.pullsUnder = true;          // a catch drags the pilot under the roots
     this.catchLine = "PULLED UNDER THE ROOTS";
+  }
+
+  /**
+   * A creeper has no eyes. It feels weight on the soil: a stretch of ground
+   * ahead of the trap, reaching a little further up a bank the further away the
+   * step is - precisely the wedge drawCone paints. Sneaking shortens the reach,
+   * and grass over the roots deadens it, which is why a tuft hides you.
+   */
+  canSee(player, level) {
+    if (this.frozen > 0) return false;
+    if (player.hidden) return false;
+    const cx = this.x + this.w / 2;
+    const foot = this.y + this.h;
+    const px = player.x + player.w / 2;
+    const feetY = player.y + player.h;
+    const dx = px - cx;
+    if (dx * this.dir < -4) return false;            // nothing is felt behind it
+    let reach = this.vision;
+    if (player.speed < 0.9) reach *= 0.55;           // a light step, half the reach
+    if (Math.abs(dx) > reach) return false;
+    if (Math.abs(feetY - foot) > creeperBand(Math.abs(dx), reach)) return false;
+    // a wall between trap and footstep is not soil: it does not carry the tremor
+    return sightClear(level.map, cx, foot - 6, px, feetY - 6);
   }
 
   update(dt, level) {
@@ -548,24 +582,25 @@ export class Creeper extends Enemy {
 
   /**
    * A creeper has no eyes. What is drawn here is its reach: a wedge of disturbed
-   * soil running along the ground in front of the trap, which is exactly the
-   * area the plant feels footsteps through. Sneaking shortens it; grass over
-   * roots deadens it, which is why standing still in tall grass hides you.
+   * soil running along the ground in front of the trap. It is built from the
+   * same band function the detection uses, so the two can never drift apart.
    */
   drawCone(ctx, cam) {
-    const range = this.state === "alert" ? this.vision * 0.8 : this.vision;
+    const reach = this.vision;
+    const cx = this.x + this.w / 2;
     const foot = this.y + this.h;
+    const sign = this.dir > 0 ? 1 : -1;
+    const STEPS = 8;
     ctx.fillStyle = this.state === "alert" ? "rgba(246,96,96,0.22)" : "rgba(150,220,130,0.13)";
     ctx.beginPath();
-    ctx.moveTo(this.x + this.w / 2 - cam.x, foot - cam.y);
-    const spread = 0.30;
-    for (let i = 0; i <= 8; i += 1) {
-      const a = -spread + (spread * 2 * i) / 8;
-      const ang = this.dir > 0 ? a : Math.PI - a;
-      ctx.lineTo(
-        this.x + this.w / 2 + Math.cos(ang) * range - cam.x,
-        foot + Math.sin(ang) * 14 - cam.y
-      );
+    ctx.moveTo(cx - cam.x, foot - cam.y);
+    for (let i = 1; i <= STEPS; i += 1) {
+      const d = (reach * i) / STEPS;
+      ctx.lineTo(cx + sign * d - cam.x, foot - creeperBand(d, reach) - cam.y);
+    }
+    for (let i = STEPS; i >= 1; i -= 1) {
+      const d = (reach * i) / STEPS;
+      ctx.lineTo(cx + sign * d - cam.x, foot + creeperBand(d, reach) - cam.y);
     }
     ctx.closePath();
     ctx.fill();
@@ -605,6 +640,57 @@ export class Bird extends Enemy {
     super.reset();
     this.y = this.home.y;
     this.hoverY = this.home.y;
+  }
+
+  /**
+   * A bird hunts from above, so it does not follow the creeper's rules: grass
+   * does not hide you from it, it only ever watches what is at or below its own
+   * line, and it looks ahead of itself rather than behind. Sneaking still
+   * shortens its reach, which is how you cross open ground under one.
+   */
+  canSee(player, level) {
+    if (this.frozen > 0) return false;
+    const eye = this.eye();
+    const px = player.x + player.w / 2;
+    const py = player.y + player.h / 2;
+    const dx = px - eye.x;
+    if (dx * this.dir < -6) return false;          // it hunts ahead of itself
+    if (py < eye.y - 30) return false;             // it is the top of this sky
+    let range = this.vision;
+    if (player.speed < 0.9) range *= 0.55;         // a quiet step keeps you under it
+    if (Math.hypot(dx, py - eye.y) > range) return false;
+    return sightClear(level.map, eye.x, eye.y, px, py);
+  }
+
+  /**
+   * The stretch of ground the bird is sweeping, with the two sight lines that
+   * bound it - the same numbers canSee uses, drawn instead of implied. The old
+   * searchlight pool showed where a drone was looking; a bird needs it more,
+   * because the thing that can catch you is no longer the thing on the floor.
+   */
+  drawWatch(ctx, cam) {
+    if (this.shadowY === null) return;
+    const eyeY = this.y + 5;
+    const drop = this.shadowY - eyeY;
+    if (drop <= 8) return;
+    const reach = Math.sqrt(Math.max(0, this.vision * this.vision - drop * drop));
+    if (reach < 4) return;
+    const cx = this.x + this.w / 2;
+    const x0 = cx + (this.dir > 0 ? -6 : -reach);
+    const x1 = cx + (this.dir > 0 ? reach : 6);
+    const alert = this.state === "alert";
+    ctx.fillStyle = alert ? "rgba(246,96,96,0.20)" : "rgba(143,182,214,0.16)";
+    ctx.fillRect(x0 - cam.x, this.shadowY - cam.y - 1, x1 - x0, 4);
+    ctx.fillStyle = alert ? "rgba(246,96,96,0.34)" : "rgba(198,222,238,0.28)";
+    ctx.fillRect(x0 - cam.x, this.shadowY - cam.y - 1, x1 - x0, 1);
+    ctx.strokeStyle = alert ? "rgba(246,96,96,0.34)" : "rgba(143,182,214,0.26)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(cx - cam.x, eyeY - cam.y);
+    ctx.lineTo(x0 - cam.x, this.shadowY - cam.y);
+    ctx.moveTo(cx - cam.x, eyeY - cam.y);
+    ctx.lineTo(x1 - cam.x, this.shadowY - cam.y);
+    ctx.stroke();
   }
 
   update(dt, level) {
@@ -671,6 +757,7 @@ export class Bird extends Enemy {
 
   draw(ctx, cam) {
     const name = this.state === "alert" ? "b_swoop" : `b_fly${Math.floor(this.anim) % 2}`;
+    this.drawWatch(ctx, cam);        // the swept floor and its sight lines first
     this.drawShadow(ctx, cam);       // under the bird, so the bird stays on top
     const spr = (this.dir < 0 ? flip(name) : IMG[name]) || IMG[name];
     if (!spr) return;
